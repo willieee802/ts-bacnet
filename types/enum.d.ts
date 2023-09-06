@@ -2277,12 +2277,12 @@ export namespace MaxApduLengthAccepted {
   let OCTETS_1476: number;
 }
 export type MaxApduLengthAccepted = {
-  OCTETS_50: 0b0000,
-  OCTETS_128: 0b0001,
-  OCTETS_206: 0b0010,
-  OCTETS_480: 0b0011,
-  OCTETS_1024: 0b0100,
-  OCTETS_1476: 0b0101
+  OCTETS_50: 0b0000;
+  OCTETS_128: 0b0001;
+  OCTETS_206: 0b0010;
+  OCTETS_480: 0b0011;
+  OCTETS_1024: 0b0100;
+  OCTETS_1476: 0b0101;
 };
 export const MaxApduLengthAcceptedName: any;
 export namespace MaxSegmentsAccepted {
