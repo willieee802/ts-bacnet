@@ -1,11 +1,9 @@
-'use strict';
+const expect = require("chai").expect;
+const utils = require("./utils");
+const baServices = require("../../lib/services");
 
-const expect      = require('chai').expect;
-const utils       = require('./utils');
-const baServices  = require('../../lib/services');
-
-describe('bacnet - Services layer iAm unit', () => {
-  it('should successfully encode and decode', () => {
+describe("bacnet - Services layer iAm unit", () => {
+  it("should successfully encode and decode", () => {
     const buffer = utils.getBuffer();
     baServices.iAm.encode(buffer, 47, 1, 1, 7);
     const result = baServices.iAm.decode(buffer.buffer, 0);
@@ -14,7 +12,7 @@ describe('bacnet - Services layer iAm unit', () => {
       deviceId: 47,
       maxApdu: 1,
       segmentation: 1,
-      vendorId: 7
+      vendorId: 7,
     });
   });
 });

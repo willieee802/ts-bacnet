@@ -1,16 +1,14 @@
-'use strict';
-
 const coreExports = {
-  debug: require('debug')('bacnet:test:unit:debug'),
-  trace: require('debug')('bacnet:test:unit:trace'),
-  bacnetClient:  require('../../')
+  debug: require("debug")("bacnet:test:unit:debug"),
+  trace: require("debug")("bacnet:test:unit:trace"),
+  bacnetClient: require("../../"),
 };
 
 module.exports = coreExports;
 
-module.exports.getBuffer = () => {
+export const getBuffer = () => {
   return {
     buffer: Buffer.alloc(1482),
-    offset: 0
+    offset: 0,
   };
 };

@@ -1,16 +1,18 @@
-'use strict';
+const expect = require("chai").expect;
+const utils = require("./utils");
 
-const expect      = require('chai').expect;
-const utils       = require('./utils');
-
-describe('bacnet - getEventInformation integration', () => {
-  it('should return a timeout error if no device is available', (next) => {
-    const client = new utils.bacnetClient({apduTimeout: 200});
-    client.getEventInformation('127.0.0.2', {type: 5, instance: 33}, (err, value) => {
-      expect(err.message).to.eql('ERR_TIMEOUT');
-      expect(value).to.eql(undefined);
-      client.close();
-      next();
-    });
+describe("bacnet - getEventInformation integration", () => {
+  it("should return a timeout error if no device is available", (next) => {
+    const client = new utils.bacnetClient({ apduTimeout: 200 });
+    client.getEventInformation(
+      "127.0.0.2",
+      { type: 5, instance: 33 },
+      (err, value) => {
+        expect(err.message).to.eql("ERR_TIMEOUT");
+        expect(value).to.eql(undefined);
+        client.close();
+        next();
+      }
+    );
   });
 });

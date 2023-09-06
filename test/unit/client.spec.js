@@ -1,12 +1,10 @@
-'use strict';
+const expect = require("chai").expect;
+const utils = require("./utils");
+const baEnum = require("../../lib/enum");
+const client = require("../../lib/client");
 
-const expect      = require('chai').expect;
-const utils       = require('./utils');
-const baEnum      = require('../../lib/enum');
-const client      = require('../../lib/client');
-
-describe('bacnet - client', () => {
-  it('should successfuly encode a bitstring > 32 bits', () => {
+describe("bacnet - client", () => {
+  it("should successfuly encode a bitstring > 32 bits", () => {
     const result = client.createBitstring([
       baEnum.ServicesSupported.CONFIRMED_COV_NOTIFICATION,
       baEnum.ServicesSupported.READ_PROPERTY,
@@ -17,7 +15,7 @@ describe('bacnet - client', () => {
       bitsUsed: 35,
     });
   });
-  it('should successfuly encode a bitstring < 8 bits', () => {
+  it("should successfuly encode a bitstring < 8 bits", () => {
     const result = client.createBitstring([
       baEnum.ServicesSupported.GET_ALARM_SUMMARY,
     ]);
@@ -26,7 +24,7 @@ describe('bacnet - client', () => {
       bitsUsed: 4,
     });
   });
-  it('should successfuly encode a bitstring of only one bit', () => {
+  it("should successfuly encode a bitstring of only one bit", () => {
     const result = client.createBitstring([
       baEnum.ServicesSupported.ACKNOWLEDGE_ALARM,
     ]);
