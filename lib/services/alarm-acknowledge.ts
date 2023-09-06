@@ -23,9 +23,22 @@ export const encode = (
   baAsn1.bacappEncodeContextTimestamp(buffer, 5, ackTimeStamp);
 };
 
+interface value {
+  acknowledgedProcessId?: number;
+  eventObjectId?: {
+    type: number;
+    instance: number;
+  };
+  eventStateAcknowledged?: number;
+  eventTimeStamp?: Date;
+  acknowledgeSource?: string;
+  acknowledgeTimeStamp?: Date;
+  len?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
-  let value = {};
+  let value: value = {};
   let result;
   let decodedValue;
   let date;
