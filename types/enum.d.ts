@@ -2174,7 +2174,43 @@ export namespace ApplicationTag {
   export let CONTEXT_SPECIFIC_ENCODED: number;
   export let LOG_RECORD: number;
 }
-export type ApplicationTag = ApplicationTag;
+export type ApplicationTag = {
+  NULL: 0;
+  BOOLEAN: 1;
+  UNSIGNED_INTEGER: 2;
+  SIGNED_INTEGER: 3;
+  REAL: 4;
+  DOUBLE: 5;
+  OCTET_STRING: 6;
+  CHARACTER_STRING: 7;
+  BIT_STRING: 8;
+  ENUMERATED: 9;
+  DATE: 10;
+  TIME: 11;
+  OBJECTIDENTIFIER: 12;
+  // Application Tags - Internal
+  EMPTYLIST: 100;
+  WEEKNDAY: 101;
+  DATERANGE: 102;
+  DATETIME: 103;
+  TIMESTAMP: 104;
+  ERROR: 105;
+  DEVICE_OBJECT_PROPERTY_REFERENCE: 106;
+  DEVICE_OBJECT_REFERENCE: 107;
+  OBJECT_PROPERTY_REFERENCE: 108;
+  DESTINATION: 109;
+  RECIPIENT: 110;
+  COV_SUBSCRIPTION: 111;
+  CALENDAR_ENTRY: 112;
+  WEEKLY_SCHEDULE: 113;
+  SPECIAL_EVENT: 114;
+  READ_ACCESS_SPECIFICATION: 115;
+  READ_ACCESS_RESULT: 116;
+  LIGHTING_COMMAND: 117;
+  CONTEXT_SPECIFIC_DECODED: 118;
+  CONTEXT_SPECIFIC_ENCODED: 119;
+  LOG_RECORD: 120;
+};
 export const ApplicationTagName: any;
 export namespace BvlcResultFormat {
   let SUCCESSFUL_COMPLETION: number;
@@ -2225,7 +2261,12 @@ export namespace EnableDisable {
   export { DISABLE_1 as DISABLE };
   export let DISABLE_INITIATION: number;
 }
-export type EnableDisable = EnableDisable;
+export type EnableDisable = {
+  ENABLE: 0;
+  DISABLE: 1;
+  DISABLE_INITIATION: 2;
+};
+
 export const EnableDisableName: any;
 export namespace MaxApduLengthAccepted {
   let OCTETS_50: number;
@@ -2235,7 +2276,14 @@ export namespace MaxApduLengthAccepted {
   let OCTETS_1024: number;
   let OCTETS_1476: number;
 }
-export type MaxApduLengthAccepted = MaxApduLengthAccepted;
+export type MaxApduLengthAccepted = {
+  OCTETS_50: 0b0000,
+  OCTETS_128: 0b0001,
+  OCTETS_206: 0b0010,
+  OCTETS_480: 0b0011,
+  OCTETS_1024: 0b0100,
+  OCTETS_1476: 0b0101
+};
 export const MaxApduLengthAcceptedName: any;
 export namespace MaxSegmentsAccepted {
   let SEGMENTS_0: number;
@@ -2247,7 +2295,17 @@ export namespace MaxSegmentsAccepted {
   let SEGMENTS_64: number;
   let SEGMENTS_65: number;
 }
-export type MaxSegmentsAccepted = MaxSegmentsAccepted;
+export type MaxSegmentsAccepted = {
+  SEGMENTS_0: number;
+  SEGMENTS_2: number;
+  SEGMENTS_4: number;
+  SEGMENTS_8: number;
+  SEGMENTS_16: number;
+  SEGMENTS_32: number;
+  SEGMENTS_64: number;
+  SEGMENTS_65: number;
+};
+
 export const MaxSegmentsAcceptedName: any;
 export namespace NetworkLayerMessageType {
   let WHO_IS_ROUTER_TO_NETWORK: number;
