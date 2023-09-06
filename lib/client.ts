@@ -6,12 +6,12 @@ import usc from "underscore";
 
 // Local Modules
 import baTransport from "./transport";
-import baServices from "./services";
-import baAsn1 from "./asn1";
-import baApdu from "./apdu";
-import baNpdu from "./npdu";
-import baBvlc from "./bvlc";
-import baEnum from "./enum";
+import * as baServices from "./services";
+import * as baAsn1 from "./asn1";
+import * as baApdu from "./apdu";
+import * as baNpdu from "./npdu";
+import * as baBvlc from "./bvlc";
+import * as baEnum from "./enum";
 
 const EventEmitter = EventEmitterEvents.EventEmitter;
 const debug = Debugger("bacnet:client:debug");

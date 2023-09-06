@@ -1108,8 +1108,7 @@ export const decodeApplicationDate = (buffer, offset) => {
   return undefined;
 };
 
-export const decodeBacnetTime = (buffer, offset) => {
-  let value;
+export const decodeBacnetTime = (buffer, offset, value = new Date(1, 1, 1)) => {
   const hour = buffer[offset + 0];
   const min = buffer[offset + 1];
   const sec = buffer[offset + 2];
@@ -1941,7 +1940,7 @@ export const encodeContextCharacterString = (
   },
   tagNumber: number,
   value: string,
-  encoding: number
+  encoding?: number
 ) => {
   const tmp = getBuffer();
   encodeBacnetCharacterString(tmp, value, encoding);
