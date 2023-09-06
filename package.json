@@ -57,6 +57,7 @@
   "homepage": "https://github.com/BiancoRoyal/node-bacstack#readme",
   "dependencies": {
     "@types/debug": "^4.1.8",
+    "@types/underscore": "^1.11.9",
     "debug": "^4.1.1",
     "iconv-lite": "^0.5.1",
     "underscore": "^1.10.2"

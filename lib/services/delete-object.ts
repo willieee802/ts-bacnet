@@ -1,5 +1,5 @@
-const baAsn1 = require("../asn1");
-const baEnum = require("../enum");
+import * as baAsn1 from "../asn1";
+import * as baEnum from "../enum";
 
 export const decode = (buffer, offset, apduLen) => {
   const result = baAsn1.decodeTagNumberAndValue(buffer, offset);

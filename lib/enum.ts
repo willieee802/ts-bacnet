@@ -23,8 +23,7 @@
  * console.log(s); // "PRESENT_VALUE(85)"
  */
 
-// const usc = require("underscore");
-import * as usc from "underscore";
+import { invert } from "underscore";
 import Debugger from "debug";
 
 const debug = Debugger("bacnet=enum=debug");
@@ -45,7 +44,7 @@ export function getEnumName(
   }
   let foundEntry = null;
   try {
-    const invertedGroup = usc.invert(group);
+    const invertedGroup = invert(group);
     foundEntry = invertedGroup[value];
     if (foundEntry === undefined && undefinedFallbackValue) {
       foundEntry = undefinedFallbackValue;

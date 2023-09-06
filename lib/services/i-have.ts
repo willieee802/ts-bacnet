@@ -1,5 +1,5 @@
-const baAsn1 = require("../asn1");
-const baEnum = require("../enum");
+import * as baAsn1 from "../asn1";
+import * as baEnum from "../enum";
 
 export const encode = (buffer, deviceId, objectId, objectName) => {
   baAsn1.encodeApplicationObjectId(buffer, deviceId.type, deviceId.instance);

@@ -1,6 +1,4 @@
-const baEnum = require("./enum");
-const debug = require("debug")("bacnet:npdu:debug");
-const trace = require("debug")("bacnet:npdu:trace");
+import * as baEnum from "./enum";
 
 const DEFAULT_HOP_COUNT = 0xff;
 const BACNET_PROTOCOL_VERSION = 1;

@@ -1,3 +1,6 @@
-module.exports = require("./lib/client");
-export const _ = require("underscore");
-export const enums = require("./lib/enum");
+import * as enums from "./lib/enum";
+import * as client from "./lib/client";
+import _ from "underscore";
+
+export { enums, _ };
+export default client;

@@ -1,6 +1,4 @@
-const baEnum = require("./enum");
-const debug = require("debug")("bacnet:bvlc:debug");
-const trace = require("debug")("bacnet:bvlc:trace");
+import * as baEnum from "./enum";
 
 const DEFAULT_BACNET_PORT = 47808;
 

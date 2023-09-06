@@ -1,7 +1,5 @@
-const baAsn1 = require("./asn1");
-const baEnum = require("./enum");
-const debug = require("debug")("bacnet:apdu:debug");
-const trace = require("debug")("bacnet:apdu:trace");
+import * as baAsn1 from "./asn1";
+import * as baEnum from "./enum";
 
 export const getDecodedType = (buffer, offset) => {
   return buffer[offset];
