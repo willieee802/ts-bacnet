@@ -1,6 +1,6 @@
-export function encode(buffer: any, alarms: any): void;
+export function encode(buffer: Buffer, alarms: any): void;
 export function decode(
-  buffer: any,
+  buffer: Buffer,
   offset: any,
   apduLen: any
 ): {

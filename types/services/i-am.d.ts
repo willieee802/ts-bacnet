@@ -1,8 +1,17 @@
-export function encode(buffer: any, deviceId: any, maxApdu: any, segmentation: any, vendorId: any): void;
-export function decode(buffer: any, offset: any): {
-    len: number;
-    deviceId: number;
-    maxApdu: any;
-    segmentation: any;
-    vendorId: any;
+export function encode(
+  buffer: Buffer,
+  deviceId: any,
+  maxApdu: any,
+  segmentation: any,
+  vendorId: any
+): void;
+export function decode(
+  buffer: Buffer,
+  offset: any
+): {
+  len: number;
+  deviceId: number;
+  maxApdu: any;
+  segmentation: any;
+  vendorId: any;
 };
