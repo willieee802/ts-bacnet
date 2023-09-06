@@ -23,11 +23,11 @@
     "compose:build": "docker-compose build",
     "compose:up": "docker-compose up --abort-on-container-exit --exit-code-from bacnet-client",
     "docker": "npm run compose:build && npm run compose:up",
-    "prepublishOnly": "npm run lint && npm run coverage && npm run docker && npm run docs"
+    "prepublishOnly": "npm run lint && npm run coverage && npm run docs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BiancoRoyal/node-bacstack.git"
+    "url": "git+https://github.com/VerticGreens/node-bacnet.git"
   },
   "keywords": [
     "bacnet",
@@ -36,23 +36,11 @@
     "automation",
     "iot"
   ],
-  "author": {
-    "name": "Fabio Huser",
-    "email": "fabio@fh1.ch"
-  },
+  "author": "Fabio Huser <fabio@fh1.ch>",
   "contributors": [
-    {
-      "name": "Klaus Landsdorf",
-      "email": "klaus@iniationware.com"
-    },
-    {
-      "name": "Ingo Fischer",
-      "email": "iobroker@fischer-ka.de"
-    },
-    {
-      "name": "Taner @taneron",
-      "email": "44664524+taneron@users.noreply.github.com"
-    }
+    "Klaus Landsdorf <klaus@iniationware.com>",
+    "Ingo Fischer <iobroker@fischer-ka.de>",
+    "Taner @taneron <44664524+taneron@users.noreply.github.com>"
   ],
   "engines": {
     "node": ">= 10"
@@ -92,6 +80,7 @@
   ],
   "directories": {
     "example": "examples",
+    "lib": "lib",
     "test": "test"
   }
 }
