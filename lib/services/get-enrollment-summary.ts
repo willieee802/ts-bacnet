@@ -47,11 +47,30 @@ export const encode = (
   }
 };
 
+interface value {
+  acknowledgmentFilter?: number;
+  enrollmentFilter?: {
+    objectId?: {
+      type: number;
+      instance: number;
+    };
+    processId?: number;
+  };
+  eventStateFilter?: number;
+  eventTypeFilter?: number;
+  priorityFilter?: {
+    min?: number;
+    max?: number;
+  };
+  notificationClassFilter?: number;
+  len?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
   let decodedValue;
-  let value = {};
+  let value: value = {};
   result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
   len += result.len;
   decodedValue = baAsn1.decodeEnumerated(buffer, offset + len, result.value);
@@ -143,13 +162,24 @@ export const encodeAcknowledge = (buffer, enrollmentSummaries) => {
   });
 };
 
+interface enrollmentSummary {
+  objectId?: {
+    type: number;
+    instance: number;
+  };
+  eventType?: number;
+  eventState?: number;
+  priority?: number;
+  notificationClass?: number;
+}
+
 export const decodeAcknowledge = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
   let decodedValue;
   const enrollmentSummaries = [];
   while (apduLen - len > 0) {
-    const enrollmentSummary = {};
+    const enrollmentSummary: enrollmentSummary = {};
     result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
     len += result.len;
     if (result.tagNumber !== baEnum.ApplicationTag.OBJECTIDENTIFIER) {

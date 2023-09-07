@@ -1,7 +1,14 @@
 import * as baAsn1 from "../asn1";
 import * as baEnum from "../enum";
 
-export const encode = (buffer: Buffer, objectId, values) => {
+export const encode = (
+  buffer: {
+    buffer: Buffer;
+    offset: number;
+  },
+  objectId,
+  values
+) => {
   baAsn1.encodeContextObjectId(buffer, 0, objectId.type, objectId.instance);
   baAsn1.encodeOpeningTag(buffer, 1);
   values.forEach((pValue) => {
@@ -47,7 +54,11 @@ export const decode = (buffer, offset, apduLen) => {
   len++;
   const _values = [];
   while (apduLen - len > 1) {
-    let newEntry = {};
+    let newEntry: {
+      property?: { id: number; index: number };
+      value?: any[];
+      priority?: number;
+    } = {};
     result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
     len += result.len;
     if (result.tagNumber !== 0) {

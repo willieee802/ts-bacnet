@@ -24,7 +24,12 @@ export const decode = (buffer, offset) => {
   };
 };
 
-export const buildMessage = function (result) {
+interface result {
+  len?: number;
+  class: baEnum.ErrorClass;
+  code: baEnum.ErrorCode;
+}
+export const buildMessage = function (result: result) {
   return (
     "BacnetError Class: " +
     baEnum.ErrorClassName[result.class] +

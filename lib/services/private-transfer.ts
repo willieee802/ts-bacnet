@@ -11,11 +11,18 @@ export const encode = (buffer, vendorId, serviceNumber, data) => {
   baAsn1.encodeClosingTag(buffer, 2);
 };
 
+interface value {
+  vendorId?: number;
+  serviceNumber?: number;
+  data?: number[];
+  len?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
   let decodedValue;
-  let value = {};
+  let value: value = {};
   result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
   len += result.len;
   decodedValue = baAsn1.decodeUnsigned(buffer, offset + len, result.value);

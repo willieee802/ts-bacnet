@@ -42,6 +42,15 @@ export const encode = (
   baAsn1.encodeClosingTag(buffer, 4);
 };
 
+interface newEntry {
+  property?: {
+    id?: number;
+    index?: number;
+  };
+  value?: any[];
+  priority?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
@@ -93,7 +102,7 @@ export const decode = (buffer, offset, apduLen) => {
     apduLen - len > 1 &&
     !baAsn1.decodeIsClosingTagNumber(buffer, offset + len, 4)
   ) {
-    let newEntry = {};
+    let newEntry: newEntry = {};
     newEntry.property = {};
     if (!baAsn1.decodeIsContextTag(buffer, offset + len, 0)) {
       return undefined;

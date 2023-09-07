@@ -41,6 +41,11 @@ export const encode = (
   }
 };
 
+interface property {
+  id?: number;
+  index?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
@@ -59,7 +64,7 @@ export const decode = (buffer, offset, apduLen) => {
     type: decodedValue.objectType,
     instance: decodedValue.instance,
   };
-  let property = {};
+  let property: property = {};
   result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
   len += result.len;
   if (result.tagNumber !== 1) {
@@ -193,6 +198,11 @@ export const encodeAcknowledge = (
   }
 };
 
+interface property {
+  id?: number;
+  index?: number;
+}
+
 export const decodeAcknowledge = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
@@ -207,7 +217,7 @@ export const decodeAcknowledge = (buffer, offset, apduLen) => {
     type: decodedValue.objectType,
     instance: decodedValue.instance,
   };
-  const property = { index: baEnum.ASN1_ARRAY_ALL };
+  const property: property = { index: baEnum.ASN1_ARRAY_ALL };
   result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
   len += result.len;
   if (result.tagNumber !== 1) {

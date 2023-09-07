@@ -23,6 +23,15 @@ export const encode = (buffer, objectId, values) => {
   baAsn1.encodeClosingTag(buffer, 1);
 };
 
+
+interface newEntry {
+  property?: {
+    id: number;
+    index: number;
+  };
+  value?: any[];
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
@@ -53,7 +62,7 @@ export const decode = (buffer, offset, apduLen) => {
   }
   len++;
   while (apduLen - len > 1) {
-    let newEntry = {};
+    let newEntry: newEntry = {};
     result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
     len += result.len;
     if (result.tagNumber !== 0) {

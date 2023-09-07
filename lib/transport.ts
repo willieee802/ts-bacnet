@@ -3,8 +3,8 @@ import EventEmitterEvents from "events";
 const EventEmitter = EventEmitterEvents.EventEmitter;
 
 import Debugger from "debug";
+import { receiver } from "./client";
 const debug = Debugger("bacnet:client:debug");
-const trace = Debugger("bacnet:client:trace");
 
 const DEFAULT_BACNET_PORT = 47808;
 
@@ -82,7 +82,7 @@ export default class Transport extends EventEmitter {
     return 1482;
   }
 
-  send(buffer, offset, receiver) {
+  send(buffer, offset, receiver: receiver) {
     if (!receiver) {
       receiver = this.getBroadcastAddress();
       const dataToSend = Buffer.alloc(offset);
@@ -96,14 +96,17 @@ export default class Transport extends EventEmitter {
         delete this._lastSendMessages[messageKey];
       }, 10000); // delete after 10s, hopefully all cases are handled by that
     }
-    const [address, port] = receiver.split(":");
+    const receiverAddress =
+      typeof receiver === "string" ? receiver : receiver.address;
+
+    const [address, port] = receiverAddress.split(":");
     debug(
       "Send packet to " +
         receiver +
         ": " +
         buffer.toString("hex").substr(0, offset * 2)
     );
-    this._server.send(buffer, 0, offset, port || DEFAULT_BACNET_PORT, address);
+    this._server.send(buffer, 0, offset, +port || DEFAULT_BACNET_PORT, address);
   }
 
   open() {

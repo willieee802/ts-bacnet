@@ -30,6 +30,21 @@ export const encode = (buffer, events, moreEvents) => {
   baAsn1.encodeContextBoolean(buffer, 1, moreEvents);
 };
 
+interface value {
+  events?: any[];
+  moreEvents?: boolean;
+  len?: number;
+  objectId?: {
+    type: number;
+    instance: number;
+  };
+  eventState?: number;
+  acknowledgedTransitions?: number;
+  eventTimeStamps?: any[];
+  notifyType?: number;
+  eventEnable?: number;
+  eventPriorities?: number[];
+}
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
@@ -38,7 +53,7 @@ export const decode = (buffer, offset, apduLen) => {
   const alarms = [];
   let moreEvents;
   while (apduLen - 3 - len > 0) {
-    let value = {};
+    let value: value = {};
     result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
     len += result.len;
     decodedValue = baAsn1.decodeObjectId(buffer, offset + len);

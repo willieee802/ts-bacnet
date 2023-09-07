@@ -29,6 +29,16 @@ import Debugger from "debug";
 const debug = Debugger("bacnet=enum=debug");
 const trace = Debugger("bacnet=enum=trace");
 
+function invertEnum(
+  enumToInvert: Record<string, number>
+): Record<number, string> {
+  const invertedEnum: Record<number, string> = {};
+  Object.keys(enumToInvert).forEach((key) => {
+    invertedEnum[enumToInvert[key]] = key;
+  });
+  return invertedEnum;
+}
+
 export function getEnumName(
   group: Record<string, number>,
   value: number,
@@ -107,66 +117,63 @@ export enum ConfirmedServiceChoice {
   GET_EVENT_INFORMATION = 29,
   SUBSCRIBE_COV_PROPERTY_MULTIPLE = 30,
   CONFIRMED_COV_NOTIFICATION_MULTIPLE = 31,
-};
-
+}
 
 export enum UnconfirmedServiceChoice {
-  I_AM= 0,
-  I_HAVE= 1,
-  UNCONFIRMED_COV_NOTIFICATION= 2,
-  UNCONFIRMED_EVENT_NOTIFICATION= 3,
-  UNCONFIRMED_PRIVATE_TRANSFER= 4,
-  UNCONFIRMED_TEXT_MESSAGE= 5,
-  TIME_SYNCHRONIZATION= 6,
-  WHO_HAS= 7,
-  WHO_IS= 8,
-  UTC_TIME_SYNCHRONIZATION= 9,
-  WRITE_GROUP= 10,
-  UNCONFIRMED_COV_NOTIFICATION_MULTIPLE= 11,
-};
+  I_AM = 0,
+  I_HAVE = 1,
+  UNCONFIRMED_COV_NOTIFICATION = 2,
+  UNCONFIRMED_EVENT_NOTIFICATION = 3,
+  UNCONFIRMED_PRIVATE_TRANSFER = 4,
+  UNCONFIRMED_TEXT_MESSAGE = 5,
+  TIME_SYNCHRONIZATION = 6,
+  WHO_HAS = 7,
+  WHO_IS = 8,
+  UTC_TIME_SYNCHRONIZATION = 9,
+  WRITE_GROUP = 10,
+  UNCONFIRMED_COV_NOTIFICATION_MULTIPLE = 11,
+}
 
+export enum AbortReason {
+  OTHER = 0,
+  BUFFER_OVERFLOW = 1,
+  INVALID_APDU_IN_THIS_STATE = 2,
+  PREEMPTED_BY_HIGHER_PRIORITY_TASK = 3,
+  SEGMENTATION_NOT_SUPPORTED = 4,
+  SECURITY_ERROR = 5,
+  INSUFFICIENT_SECURITY = 6,
+  WINDOW_SIZE_OUT_OF_RANGE = 7,
+  APPLICATION_EXCEEDED_REPLY_TIME = 8,
+  OUT_OF_RESOURCES = 9,
+  TSM_TIMEOUT = 10,
+  APDU_TOO_LONG = 11,
+}
 
+export enum RejectReason {
+  OTHER = 0,
+  BUFFER_OVERFLOW = 1,
+  INCONSISTENT_PARAMETERS = 2,
+  INVALID_PARAMETER_DATA_TYPE = 3,
+  INVALID_TAG = 4,
+  MISSING_REQUIRED_PARAMETER = 5,
+  PARAMETER_OUT_OF_RANGE = 6,
+  TOO_MANY_ARGUMENTS = 7,
+  UNDEFINED_ENUMERATION = 8,
+  UNRECOGNIZED_SERVICE = 9,
+}
 
-export enum AbortReason  {
-  OTHER= 0,
-  BUFFER_OVERFLOW= 1,
-  INVALID_APDU_IN_THIS_STATE= 2,
-  PREEMPTED_BY_HIGHER_PRIORITY_TASK= 3,
-  SEGMENTATION_NOT_SUPPORTED= 4,
-  SECURITY_ERROR= 5,
-  INSUFFICIENT_SECURITY= 6,
-  WINDOW_SIZE_OUT_OF_RANGE= 7,
-  APPLICATION_EXCEEDED_REPLY_TIME= 8,
-  OUT_OF_RESOURCES= 9,
-  TSM_TIMEOUT= 10,
-  APDU_TOO_LONG= 11,
-};
+export enum ErrorClass {
+  DEVICE = 0,
+  OBJECT = 1,
+  PROPERTY = 2,
+  RESOURCES = 3,
+  SECURITY = 4,
+  SERVICES = 5,
+  VT = 6,
+  COMMUNICATION = 7,
+}
 
-
-export enum RejectReason  {
-  OTHER= 0,
-  BUFFER_OVERFLOW= 1,
-  INCONSISTENT_PARAMETERS= 2,
-  INVALID_PARAMETER_DATA_TYPE= 3,
-  INVALID_TAG= 4,
-  MISSING_REQUIRED_PARAMETER= 5,
-  PARAMETER_OUT_OF_RANGE= 6,
-  TOO_MANY_ARGUMENTS= 7,
-  UNDEFINED_ENUMERATION= 8,
-  UNRECOGNIZED_SERVICE= 9,
-};
-
-
-export enum ErrorClass  {
-  DEVICE= 0,
-  OBJECT= 1,
-  PROPERTY= 2,
-  RESOURCES= 3,
-  SECURITY= 4,
-  SERVICES= 5,
-  VT= 6,
-  COMMUNICATION= 7,
-};
+export const ErrorClassName = invertEnum(ErrorClass as unknown as Record<string, number>);
 
 export enum ErrorCode {
   ABORT_APDU_TOO_LONG= 123,
@@ -303,6 +310,8 @@ export enum ErrorCode {
   WRITE_ACCESS_DENIED= 40,
   WRITE_BDT_FAILED= 116,
 };
+
+export const ErrorCodeName = invertEnum(ErrorCode as unknown as Record<string, number>);
 
 
 export enum AccessAuthenticationFactorDisable  {

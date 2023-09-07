@@ -26,14 +26,17 @@ export const getDecodedInvokeId = (buffer, offset) => {
 };
 
 export const encodeConfirmedServiceRequest = (
-  buffer,
-  type,
-  service,
-  maxSegments,
-  maxApdu,
-  invokeId,
-  sequencenumber,
-  proposedWindowSize
+  buffer: {
+    buffer: Buffer;
+    offset: number;
+  },
+  type: baEnum.PduType,
+  service: number,
+  maxSegments?: number,
+  maxApdu?: number,
+  invokeId?: number,
+  sequencenumber?: number,
+  proposedWindowSize?: number
 ) => {
   buffer.buffer[buffer.offset++] = type;
   buffer.buffer[buffer.offset++] = maxSegments | maxApdu;
@@ -106,12 +109,15 @@ export const decodeSimpleAck = (buffer, offset) => {
 };
 
 export const encodeComplexAck = (
-  buffer,
-  type,
-  service,
-  invokeId,
-  sequencenumber,
-  proposedWindowNumber
+  buffer: {
+    buffer: Buffer;
+    offset: number;
+  },
+  type: baEnum.PduType,
+  service?: number,
+  invokeId?: number,
+  sequencenumber?: number,
+  proposedWindowNumber?: number
 ) => {
   let len = 3;
   buffer.buffer[buffer.offset++] = type;

@@ -2,7 +2,6 @@
 
 import EventEmitterEvents from "events";
 import Debugger from "debug";
-import usc from "underscore";
 
 // Local Modules
 import baTransport from "./transport";
@@ -12,6 +11,16 @@ import * as baApdu from "./apdu";
 import * as baNpdu from "./npdu";
 import * as baBvlc from "./bvlc";
 import * as baEnum from "./enum";
+
+export type receiverString = string;
+export type receiverObject = {
+  address: string;
+  forwardedFrom?: string;
+  lowLimit?: number;
+  highLimit?: number;
+} & baNpdu.destinationOrSource;
+
+export type receiver = receiverString | receiverObject;
 
 const EventEmitter = EventEmitterEvents.EventEmitter;
 const debug = Debugger("bacnet:client:debug");
@@ -63,6 +72,22 @@ const confirmedServiceMap = {
   [beC.CONFIRMED_PRIVATE_TRANSFER]: "privateTransfer",
 };
 
+class BacnetError extends Error {
+  public bacnetErrorClass: baEnum.ErrorClass;
+  public bacnetErrorCode: baEnum.ErrorCode;
+  public bacnetAbortReason: baEnum.AbortReason;
+
+  constructor(
+    message: string,
+    bacnetErrorClass?: baEnum.ErrorClass,
+    bacnetErrorCode?: baEnum.ErrorCode
+  ) {
+    super(message);
+    this.bacnetErrorClass = bacnetErrorClass;
+    this.bacnetErrorCode = bacnetErrorCode;
+  }
+}
+
 /**
  * To be able to communicate to BACNET devices, you have to initialize a new bacnet instance.
  * @class bacnet
@@ -82,6 +107,14 @@ const confirmedServiceMap = {
  * });
  */
 class Client extends EventEmitter {
+  private _invokeCounter: number;
+  private _invokeStore?: {
+    [key: string]: (err: Error | BacnetError, data?: any) => void;
+  };
+  private _lastSequenceNumber: number;
+  private _segmentStore: any[];
+  private _settings: any;
+  private _transport: any;
   /**
    *
    * @param options
@@ -143,7 +176,7 @@ class Client extends EventEmitter {
    * @returns {*}
    * @private
    */
-  _invokeCallback(id, err, result) {
+  _invokeCallback(id: string, err: Error | BacnetError, result?: any) {
     const callback = this._invokeStore[id];
     if (callback) {
       return void callback(err, result);
@@ -175,7 +208,7 @@ class Client extends EventEmitter {
    * @returns {{offset: (number), buffer: *}}
    * @private
    */
-  _getBuffer(isForwarded) {
+  _getBuffer(isForwarded?: boolean) {
     return Object.assign(
       {},
       {
@@ -195,12 +228,13 @@ class Client extends EventEmitter {
    * @private
    */
   _processError(invokeId, buffer, offset, length) {
-    const result = baServices.error.decode(buffer, offset, length);
+    // const result = baServices.error.decode(buffer, offset, length);
+    const result = baServices.error.decode(buffer, offset);
     trace("Received error:", result);
     if (!result) {
       return debug("Couldn`t decode Error");
     }
-    const err = new Error(baServices.error.buildMessage(result));
+    const err = new BacnetError(baServices.error.buildMessage(result));
     err.bacnetErrorClass = result.class;
     err.bacnetErrorCode = result.code;
     this._invokeCallback(invokeId, err);
@@ -212,8 +246,9 @@ class Client extends EventEmitter {
    * @param reason
    * @private
    */
-  _processAbort(invokeId, reason) {
-    const err = new Error("BacnetAbort - Reason:" + reason);
+  _processAbort(invokeId: string, reason: baEnum.AbortReason) {
+    const err = new BacnetError("BacnetAbort - Reason:" + reason);
+
     err.bacnetAbortReason = reason;
     this._invokeCallback(invokeId, err);
   }
@@ -2308,12 +2343,12 @@ class Client extends EventEmitter {
   iHaveResponse(receiver, deviceId, objectId, objectName) {
     const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
-    baApdu.EecodeUnconfirmedServiceRequest(
+    baApdu.encodeUnconfirmedServiceRequest(
       buffer,
       baEnum.PduType.UNCONFIRMED_REQUEST,
       baEnum.UnconfirmedServiceChoice.I_HAVE
     );
-    baServices.iHave(buffer, deviceId, objectId, objectName);
+    baServices.iHave.encode(buffer, deviceId, objectId, objectName);
     this.sendBvlc(receiver, buffer);
   }
 
@@ -2323,8 +2358,9 @@ class Client extends EventEmitter {
    * @param service
    * @param invokeId
    */
-  simpleAckResponse(receiver, service, invokeId) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+  simpleAckResponse(receiver: receiver, service, invokeId) {
+    if (typeof receiver === "string") return;
+    const buffer = this._getBuffer(!!receiver.forwardedFrom);
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeSimpleAck(
       buffer,
@@ -2343,7 +2379,13 @@ class Client extends EventEmitter {
    * @param errorClass
    * @param errorCode
    */
-  errorResponse(receiver, service, invokeId, errorClass, errorCode) {
+  errorResponse(
+    receiver: receiver,
+    service,
+    invokeId: number,
+    errorClass: baEnum.ErrorClass,
+    errorCode: baEnum.ErrorCode
+  ) {
     trace(
       `error response on ${JSON.stringify(receiver)} service: ${JSON.stringify(
         service
@@ -2355,7 +2397,12 @@ class Client extends EventEmitter {
         code: errorCode,
       })}`
     );
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const hasSource = !!(
+      typeof receiver !== "string" && receiver.forwardedFrom
+    );
+    if (typeof receiver === "string")
+      throw new Error("receiver must be object");
+    const buffer = this._getBuffer(hasSource);
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeError(buffer, baEnum.PduType.ERROR, service, invokeId);
     baServices.error.encode(buffer, errorClass, errorCode);

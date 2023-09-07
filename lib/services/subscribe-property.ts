@@ -34,9 +34,26 @@ export const encode = (
   }
 };
 
+interface value {
+  subscriberProcessId?: number;
+  monitoredObjectId?: {
+    type: number;
+    instance: number;
+  };
+  cancellationRequest?: boolean;
+  issueConfirmedNotifications?: boolean;
+  lifetime?: number;
+  monitoredProperty?: {
+    id?: number;
+    index?: number;
+  };
+  covIncrement?: number;
+  len?: number;
+}
+
 export const decode = (buffer, offset) => {
   let len = 0;
-  let value = {};
+  let value: value = {};
   let result;
   let decodedValue;
   if (!baAsn1.decodeIsContextTag(buffer, offset + len, 0)) {

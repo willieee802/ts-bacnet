@@ -2,7 +2,10 @@ import * as baAsn1 from "../asn1";
 import * as baEnum from "../enum";
 
 export const encode = (
-  buffer: Buffer,
+  buffer: {
+    buffer: Buffer;
+    offset: number;
+  },
   objectType,
   objectInstance,
   propertyId,
@@ -25,9 +28,24 @@ export const encode = (
   }
 };
 
+export interface DecodedValue {
+  objectId?: {
+    type: number;
+    instance: number;
+  };
+  property?: {
+    id?: number;
+    index?: number;
+  };
+  value?: any[];
+  values?: any[];
+  len?: number;
+  priority?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
-  let value = {
+  let value: DecodedValue = {
     property: {},
   };
   let decodedValue;

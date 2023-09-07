@@ -1,5 +1,4 @@
 import * as baAsn1 from "../asn1";
-import * as baEnum from "../enum";
 
 export const encode = (buffer, properties) => {
   properties.forEach((value) => {
@@ -43,7 +42,7 @@ export const decodeAcknowledge = (buffer, offset, apduLen) => {
       offset + len,
       apduLen - len
     );
-    if (!result) {
+    if (!result || result === -1) {
       return undefined;
     }
     len += result.len;

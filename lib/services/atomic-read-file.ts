@@ -116,8 +116,8 @@ export const encodeAcknowledge = (
   }
 };
 
-export const decodeAcknowledge = (buffer, offset) => {
-  let len = 0;
+export const decodeAcknowledge = (buffer, offset, length = 0) => {
+  let len = length;
   let result;
   let decodedValue;
   let endOfFile;

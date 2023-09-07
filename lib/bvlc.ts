@@ -2,7 +2,16 @@ import * as baEnum from "./enum";
 
 const DEFAULT_BACNET_PORT = 47808;
 
-export const encode = (buffer, func, msgLength, originatingIP) => {
+type ipAddress =
+  | `${number}.${number}.${number}.${number}`
+  | `${number}.${number}.${number}.${number}:${number}`;
+
+export const encode = (
+  buffer: Buffer,
+  func: baEnum.BvlcResultPurpose,
+  msgLength: number,
+  originatingIP?: ipAddress
+) => {
   buffer[0] = baEnum.BVLL_TYPE_BACNET_IP;
   buffer[1] = func;
   buffer[2] = (msgLength & 0xff00) >> 8;

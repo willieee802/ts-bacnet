@@ -9,12 +9,19 @@ export const encode = (buffer, lastReceivedObjectId) => {
     lastReceivedObjectId.instance
   );
 };
+interface valueDecode {
+  lastReceivedObjectId?: {
+    type: number;
+    instance: number;
+  };
+  len?: number;
+}
 
 export const decode = (buffer, offset) => {
   let len = 0;
   let result;
   let decodedValue;
-  let value = {};
+  let value: valueDecode = {};
   result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
   len += result.len;
   decodedValue = baAsn1.decodeObjectId(buffer, offset + len);
@@ -55,18 +62,47 @@ export const encodeAcknowledge = (buffer, events, moreEvents) => {
   baAsn1.encodeContextBoolean(buffer, 1, moreEvents);
 };
 
+interface valueAcknowledge {
+  events?: any[];
+  moreEvents?: boolean;
+  len?: number;
+}
+
+interface event {
+  objectId?: {
+    type: number;
+    instance: number;
+  };
+  eventState?: number;
+  acknowledgedTransitions?: number;
+  eventTimeStamps?: any[];
+  notifyType?: number;
+  eventEnable?: number;
+  eventPriorities?: number[];
+}
+
+type timeOrValue =
+  | Date
+  | {
+      len: number;
+      value: {
+        len: number;
+        value: Date;
+      };
+    };
+
 export const decodeAcknowledge = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
   let decodedValue;
-  let value = {};
+  let value: valueAcknowledge = {};
   if (!baAsn1.decodeIsOpeningTagNumber(buffer, offset + len, 0)) {
     return undefined;
   }
   len++;
   value.events = [];
   while (apduLen - len > 3) {
-    let event = {};
+    let event: event = {};
     result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
     len += result.len;
     decodedValue = baAsn1.decodeObjectId(buffer, offset + len);
@@ -116,12 +152,19 @@ export const decodeAcknowledge = (buffer, offset, apduLen) => {
           type: baEnum.TimeStamp.SEQUENCE_NUMBER,
         };
       } else if (result.tagNumber === baEnum.TimeStamp.DATETIME) {
-        let date = baAsn1.decodeApplicationDate(buffer, offset + len);
+        let date: timeOrValue = baAsn1.decodeApplicationDate(
+          buffer,
+          offset + len
+        );
         len += date.len;
-        date = date.value.value;
-        let time = baAsn1.decodeApplicationTime(buffer, offset + len);
+        date = date.value.value as Date;
+        let time: timeOrValue = baAsn1.decodeApplicationTime(
+          buffer,
+          offset + len
+        );
         len += time.len;
         time = time.value.value;
+
         event.eventTimeStamps[i] = {
           value: new Date(
             date.getFullYear(),

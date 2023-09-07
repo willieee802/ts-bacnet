@@ -1,11 +1,9 @@
+//@ts-nochec
 import iconv from "iconv-lite";
 import baEnum from "./enums";
-import Debugger from "debug";
-const debug = Debugger("bacnet:asn1:debug");
-const trace = Debugger("bacnet:asn1:trace");
 
-export const START_YEAR = (1900);
-export const MAX_YEARS = (256);
+export const START_YEAR = 1900;
+export const MAX_YEARS = 256;
 
 const getBuffer = () => {
   return {
@@ -28,7 +26,11 @@ const getUnsignedLength = (value) => {
   else return 4;
 };
 
-const getEncodingType = (encoding: baEnum.CharacterStringEncoding, decodingBuffer:Buffer, decodingOffset:number) => {
+const getEncodingType = (
+  encoding: baEnum.CharacterStringEncoding,
+  decodingBuffer?: Buffer,
+  decodingOffset?: number
+) => {
   switch (encoding) {
     case baEnum.CharacterStringEncoding.UCS_2:
       if (
@@ -50,14 +52,10 @@ const getEncodingType = (encoding: baEnum.CharacterStringEncoding, decodingBuffe
   }
 };
 
-export const encodeUnsigned = (
-  buffer,
-  value,
-  length
-) => {
+export const encodeUnsigned = (buffer, value, length) => {
   buffer.buffer.writeUIntBE(value, buffer.offset, length, true);
   buffer.offset += length;
-}
+};
 
 const encodeBacnetUnsigned = (buffer, value) => {
   encodeUnsigned(buffer, value, getUnsignedLength(value));
@@ -95,7 +93,7 @@ export const decodeUnsigned = (
   }
   return {
     len: length,
-    value: buffer.readUIntBE(offset, length, true),
+    value: buffer.readUIntBE(offset, length),
   };
 };
 
@@ -476,7 +474,18 @@ const encodeCovSubscription = (buffer, value) => {
   }
 };
 
-export const bacappEncodeApplicationData = (buffer, value) => {
+interface value {
+  type?: number;
+  value?: any;
+  encoding?: number;
+}
+export const bacappEncodeApplicationData = (
+  buffer: {
+    buffer: Buffer;
+    offset: number;
+  },
+  value: value
+) => {
   if (value.value === null) {
     value.type = baEnum.ApplicationTag.NULL;
   }
@@ -542,7 +551,10 @@ export const bacappEncodeApplicationData = (buffer, value) => {
     default:
       throw (
         "No encode for ApplicationTag type: " +
-        baEnum.getEnumName(baEnum.ApplicationTag, value.type)
+        baEnum.getEnumName(
+          baEnum.ApplicationTag as unknown as Record<string, number>,
+          value.type
+        )
       );
   }
 };
@@ -692,7 +704,7 @@ export const decodeIsOpeningTag = (buffer, offset) => {
   return (buffer[offset] & 0x07) === 6;
 };
 
-export const decodeObjectId = (buffer, offset) => {
+export const decodeObjectId = (buffer, offset, NOT_USED_NUMBER = 0) => {
   const result = decodeUnsigned(buffer, offset, 4);
   const objectType =
     (result.value >> baEnum.ASN1_INSTANCE_BITS) & baEnum.ASN1_MAX_OBJECT;
@@ -1017,11 +1029,11 @@ export const decodeOctetString = (
 };
 
 const multiCharsetCharacterstringDecode = (
-  buffer,
-  offset,
-  maxLength,
-  encoding,
-  length
+  buffer: Buffer,
+  offset: number,
+  maxLength: number,
+  encoding: number,
+  length: number
 ) => {
   const stringBuf = Buffer.alloc(length);
   buffer.copy(stringBuf, 0, offset, offset + length);
@@ -1918,14 +1930,22 @@ export const decodeContextObjectId = (buffer, offset, tagNumber) => {
   return decodedValue;
 };
 
-const encodeBacnetCharacterString = (buffer, value, encoding) => {
+const encodeBacnetCharacterString = (
+  buffer,
+  value,
+  encoding?: baEnum.CharacterStringEncoding
+) => {
   encoding = encoding || baEnum.CharacterStringEncoding.UTF_8;
   buffer.buffer[buffer.offset++] = encoding;
   const bufEncoded = iconv.encode(value, getEncodingType(encoding));
   buffer.offset += bufEncoded.copy(buffer.buffer, buffer.offset);
 };
 
-export const encodeApplicationCharacterString = (buffer, value, encoding) => {
+export const encodeApplicationCharacterString = (
+  buffer,
+  value,
+  encoding?: baEnum.CharacterStringEncoding
+) => {
   const tmp = getBuffer();
   encodeBacnetCharacterString(tmp, value, encoding);
   encodeTag(buffer, baEnum.ApplicationTag.CHARACTER_STRING, false, tmp.offset);

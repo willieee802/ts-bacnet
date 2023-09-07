@@ -7,9 +7,15 @@ const BACNET_ADDRESS_TYPES = {
   IP: 1,
 };
 
+interface target {
+  type?: number;
+  net?: number;
+  adr?: number[];
+}
+
 const decodeTarget = (buffer, offset) => {
   let len = 0;
-  const target = {
+  const target: target = {
     type: BACNET_ADDRESS_TYPES.NONE,
     net: (buffer[offset + len++] << 8) | (buffer[offset + len++] << 0),
   };
@@ -26,7 +32,13 @@ const decodeTarget = (buffer, offset) => {
   };
 };
 
-const encodeTarget = (buffer, target) => {
+const encodeTarget = (
+  buffer: {
+    buffer: Buffer;
+    offset: number;
+  },
+  target: destinationOrSource
+) => {
   buffer.buffer[buffer.offset++] = (target.net & 0xff00) >> 8;
   buffer.buffer[buffer.offset++] = (target.net & 0x00ff) >> 0;
   if (target.net === 0xffff || !target.adr) {
@@ -41,14 +53,14 @@ const encodeTarget = (buffer, target) => {
   }
 };
 
-export const decodeFunction = (buffer, offset) => {
+export const decodeFunction = (buffer: Buffer, offset: number) => {
   if (buffer[offset + 0] !== BACNET_PROTOCOL_VERSION) {
     return undefined;
   }
   return buffer[offset + 1];
 };
 
-export const decode = (buffer, offset) => {
+export const decode = (buffer: Buffer, offset: number) => {
   let adrLen;
   const orgOffset = offset;
   offset++;
@@ -95,14 +107,23 @@ export const decode = (buffer, offset) => {
   };
 };
 
+export interface destinationOrSource {
+  type?: number;
+  net?: number;
+  adr?: number[];
+}
+
 export const encode = (
-  buffer,
-  funct,
-  destination,
-  source,
-  hopCount,
-  networkMsgType,
-  vendorId
+  buffer: {
+    buffer: Buffer;
+    offset: number;
+  },
+  funct: number,
+  destination?: destinationOrSource,
+  source?: destinationOrSource,
+  hopCount?: number,
+  networkMsgType?: number,
+  vendorId?: number
 ) => {
   const hasDestination = destination && destination.net > 0;
   const hasSource = source && source.net > 0 && source.net !== 0xffff;
@@ -127,6 +148,7 @@ export const encode = (
 
   if ((funct & baEnum.NpduControlBit.NETWORK_LAYER_MESSAGE) > 0) {
     buffer.buffer[buffer.offset++] = networkMsgType;
+
     if (networkMsgType >= 0x80) {
       buffer.buffer[buffer.offset++] = (vendorId & 0xff00) >> 8;
       buffer.buffer[buffer.offset++] = (vendorId & 0x00ff) >> 0;

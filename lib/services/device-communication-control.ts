@@ -11,9 +11,17 @@ export const encode = (buffer, timeDuration, enableDisable, password) => {
   }
 };
 
+interface value {
+  timeDuration?: number;
+  enableDisable?: number;
+  password?: string;
+  len?: number;
+}
+
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
-  let value = {};
+  let value: value = {};
   let decodedValue;
   let result;
   if (baAsn1.decodeIsContextTag(buffer, offset + len, 0)) {

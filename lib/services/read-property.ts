@@ -23,6 +23,11 @@ export const encode = (
   }
 };
 
+interface property {
+  id?: number;
+  index?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
   let result;
@@ -40,7 +45,7 @@ export const decode = (buffer, offset, apduLen) => {
     type: decodedValue.objectType,
     instance: decodedValue.instance,
   };
-  let property = {};
+  let property: property = {};
   result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
   len += result.len;
   if (result.tagNumber !== 1) {
@@ -90,11 +95,16 @@ export const encodeAcknowledge = (
   baAsn1.encodeClosingTag(buffer, 3);
 };
 
+interface objectId {
+  type?: number;
+  instance?: number;
+}
+
 export const decodeAcknowledge = (buffer, offset, apduLen) => {
   let result;
   let decodedValue;
-  let objectId = {};
-  let property = {};
+  let objectId: objectId = {};
+  let property: property = {};
   if (!baAsn1.decodeIsContextTag(buffer, offset, 0)) {
     return undefined;
   }

@@ -1,5 +1,6 @@
 import * as baAsn1 from "../asn1";
 import * as baEnum from "../enum";
+import { DecodedValue } from "./write-property";
 
 export const encode = (buffer, objectId, propertyId, arrayIndex, values) => {
   baAsn1.encodeContextObjectId(buffer, 0, objectId.type, objectId.instance);
@@ -14,11 +15,11 @@ export const encode = (buffer, objectId, propertyId, arrayIndex, values) => {
   baAsn1.encodeClosingTag(buffer, 3);
 };
 
-export const decode = (buffer, offset, apduLen) => {
+export const decode = (buffer: Buffer, offset: number, apduLen: number) => {
   let len = 0;
   let result;
   let decodedValue;
-  let value = {};
+  let value: DecodedValue = {};
   result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
   len += result.len;
   decodedValue = baAsn1.decodeObjectId(buffer, offset + len);

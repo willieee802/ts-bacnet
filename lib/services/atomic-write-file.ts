@@ -131,8 +131,8 @@ export const encodeAcknowledge = (buffer, isStream, position) => {
   }
 };
 
-export const decodeAcknowledge = (buffer, offset) => {
-  let len = 0;
+export const decodeAcknowledge = (buffer, offset, length = 0) => {
+  let len = length;
   let isStream = false;
   let position = 0;
   let decodedValue;

@@ -3,7 +3,7 @@ npm-debug.log
 reports/
 docs/
 .nyc_output/
-
+dist
 coverage/
 
 *.log

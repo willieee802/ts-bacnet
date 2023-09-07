@@ -36,9 +36,15 @@ export const encode = (buffer, lowLimit, highLimit) => {
   }
 };
 
+interface value {
+  lowLimit?: number;
+  highLimit?: number;
+  len?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
-  let value = {};
+  let value: value = {};
   if (apduLen <= 0) {
     return {}; // TODO: why??
   }

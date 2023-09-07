@@ -189,12 +189,33 @@ export const encode = (buffer, data) => {
       break;
   }
 };
+interface eventData {
+  processId?: number;
+  initiatingObjectId?: {
+    type: number;
+    instance: number;
+  };
+  eventObjectId?: {
+    type: number;
+    instance: number;
+  };
+  timeStamp?: Date;
+  notificationClass?: number;
+  priority?: number;
+  eventType?: number;
+  messageText?: string;
+  notifyType?: number;
+  ackRequired?: boolean;
+  fromState?: number;
+  toState?: number;
+  len?: number;
+}
 
 export const decode = (buffer, offset) => {
   let len = 0;
   let result;
   let decodedValue;
-  let eventData = {};
+  let eventData: eventData = {};
   if (!baAsn1.decodeIsContextTag(buffer, offset + len, 0)) {
     return undefined;
   }
@@ -235,7 +256,7 @@ export const decode = (buffer, offset) => {
   decodedValue = baAsn1.decodeApplicationTime(buffer, offset + len);
   len += decodedValue.len;
   const time = decodedValue.value.value;
-  eventData.timeStamp = {};
+  // eventData.timeStamp = {};
   eventData.timeStamp = new Date(
     date.getFullYear(),
     date.getMonth(),

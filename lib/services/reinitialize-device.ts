@@ -8,9 +8,15 @@ export const encode = (buffer, state, password) => {
   }
 };
 
+interface value {
+  state?: number;
+  password?: number;
+  len?: number;
+}
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
-  let value = {};
+  let value: value = {};
   let result;
   if (!baAsn1.decodeIsContextTag(buffer, offset + len, 0)) {
     return undefined;
@@ -30,6 +36,7 @@ export const decode = (buffer, offset, apduLen) => {
     }
     result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
     len += result.len;
+    // @ts-ignore
     decodedValue = baAsn1.decodeCharacterString(
       buffer,
       offset + len,

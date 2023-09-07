@@ -18,9 +18,21 @@ export const encode = (buffer, lowLimit, highLimit, objectId, objectName) => {
   }
 };
 
+interface value {
+  lowLimit?: number;
+  highLimit?: number;
+  objectId?: {
+    type: number;
+    instance: number;
+  };
+  objectName?: string;
+  len?: number;
+}
+
+
 export const decode = (buffer, offset, apduLen) => {
   let len = 0;
-  let value = {};
+  let value: value = {};
   let decodedValue;
   let result = baAsn1.decodeTagNumberAndValue(buffer, offset + len);
   len += result.len;
