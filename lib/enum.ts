@@ -2117,6 +2117,10 @@ export enum ApplicationTag {
   LOG_RECORD= 120,
 };
 
+export const ApplicationTagName = invertEnum(
+  ApplicationTag as unknown as Record<string, number>
+);
+
 
 // ASHRE 135-2016 - J.2.1.1 BVLC-Result= Format - Enumerators
 export enum BvlcResultFormat {

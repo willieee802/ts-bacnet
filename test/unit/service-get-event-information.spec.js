@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baServices = require("../../lib/services");
-const baEnum = require("../../lib/enum");
+const baServices = require("../../libjs/services");
+const baEnum = require("../../libjs/enum");
 
 describe("bacnet - Services layer GetEventInformation unit", () => {
   it("should successfully encode and decode", () => {

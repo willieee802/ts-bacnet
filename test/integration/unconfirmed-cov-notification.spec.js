@@ -1,6 +1,6 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baEnum = require("../../lib/enum");
+const baEnum = require("../../libjs/enum");
 
 describe("bacnet - unconfirmedCOVNotification integration", () => {
   it("should correctly send a telegram", () => {

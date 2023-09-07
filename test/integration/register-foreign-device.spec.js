@@ -1,5 +1,5 @@
 const expect = require("chai").expect;
-const services = require("../../lib/services/index");
+const services = require("../../libjs/services/index");
 
 describe("bacnet - register foreign device integration", () => {
   // TODO: this is just documentation what it does for now - needs a review

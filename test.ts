@@ -1,3 +1,3 @@
-import bacnet from ".";
+import client from "dist";
 
-const client = new bacnet();
+const bacnet = new client();

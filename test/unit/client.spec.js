@@ -1,7 +1,13 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baEnum = require("../../lib/enum");
-const client = require("../../lib/client");
+const baEnum = require("../../libjs/enum");
+const client = require("../../libjs/client").default;
+
+const result = client.createBitstring([
+  baEnum.ServicesSupported.ACKNOWLEDGE_ALARM,
+]);
+
+console.log(result);
 
 describe("bacnet - client", () => {
   it("should successfuly encode a bitstring > 32 bits", () => {

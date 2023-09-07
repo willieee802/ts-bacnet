@@ -1,6 +1,7 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baEnum = require("../../lib/enum");
+const baEnum = require("../../libjs/enum");
+
 
 describe("bacnet - confirmedCOVNotification integration", () => {
   it("should return a timeout error if no device is available", (next) => {

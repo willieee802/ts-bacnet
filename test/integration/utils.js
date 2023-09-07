@@ -1,7 +1,10 @@
+"use strict";
+
 const coreExports = {
   debug: require("debug")("bacnet:test:integration:debug"),
   trace: require("debug")("bacnet:test:integration:trace"),
-  bacnetClient: require("../../"),
+  // bacnetClient: require("../../"),
+  bacnetClient: require("../../libjs/client").default,
 };
 
 module.exports = coreExports;
@@ -22,9 +25,9 @@ class Transport extends EventEmitter {
   open() {}
   close() {}
 }
-export const transportStub = Transport;
+module.exports.transportStub = Transport;
 
-export const propertyFormater = (object) => {
+module.exports.propertyFormater = (object) => {
   const converted = {};
   object.forEach((property) => (converted[property.id] = property.value));
   return converted;

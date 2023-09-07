@@ -1,5 +1,4 @@
 // Util Modules
-
 import EventEmitterEvents from "events";
 import Debugger from "debug";
 
@@ -106,7 +105,16 @@ class BacnetError extends Error {
  *   apduTimeout: 6000                     // Wait twice as long for response
  * });
  */
-class Client extends EventEmitter {
+
+interface ClientOptions {
+  port?: number;
+  interface?: string;
+  transport?: any;
+  broadcastAddress?: string;
+  apduTimeout?: number;
+  reuseAddr?: boolean;
+}
+export default class Client extends EventEmitter {
   private _invokeCounter: number;
   private _invokeStore?: {
     [key: string]: (err: Error | BacnetError, data?: any) => void;
@@ -119,7 +127,7 @@ class Client extends EventEmitter {
    *
    * @param options
    */
-  constructor(options) {
+  constructor(options?: ClientOptions) {
     super();
 
     options = options || {};
@@ -2521,4 +2529,3 @@ class Client extends EventEmitter {
     };
   }
 }
-module.exports = Client;
