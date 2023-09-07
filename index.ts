@@ -1,5 +1,5 @@
-import * as enums from "./lib/enum";
-import * as client from "./lib/client";
+import * as enums from "./src/enum";
+import * as client from "./src/client";
 import _ from "underscore";
 
 export { enums, _ };

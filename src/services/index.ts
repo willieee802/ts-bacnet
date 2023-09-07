@@ -31,4 +31,4 @@ export * as whoIs from "./who-is";
 export * as writeProperty from "./write-property";
 export * as writePropertyMultiple from "./write-property-multiple";
 
-// Path: lib/services/index.ts
+// Path: src/services/index.ts

@@ -1,6 +1,6 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baServices = require("../../libjs/services");
+const baServices = require("../../lib/services");
 
 describe("bacnet - Services layer Error unit", () => {
   it("should successfully encode and decode", () => {

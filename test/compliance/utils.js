@@ -1,7 +1,7 @@
 const coreExports = {
   debug: require("debug")("bacnet:test:compliance:debug"),
   trace: require("debug")("bacnet:test:compliance:trace"),
-  bacnetClient: require("../../"),
+  bacnetClient: require("../../lib/client").default,
   deviceUnderTest: 1234,
   maxApdu: 1476,
   vendorId: 260,

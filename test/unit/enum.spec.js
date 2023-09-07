@@ -1,5 +1,5 @@
 const expect = require("chai").expect;
-const bacnetEnum = require("../../libjs/enum");
+const bacnetEnum = require("../../lib/enum");
 
 console.log(bacnetEnum);
 

@@ -4,7 +4,7 @@ const coreExports = {
   debug: require("debug")("bacnet:test:integration:debug"),
   trace: require("debug")("bacnet:test:integration:trace"),
   // bacnetClient: require("../../"),
-  bacnetClient: require("../../libjs/client").default,
+  bacnetClient: require("../../lib/client").default,
 };
 
 module.exports = coreExports;

@@ -4,7 +4,7 @@ reports/
 docs/
 .nyc_output/
 dist
-libjs
+lib
 coverage/
 
 *.log

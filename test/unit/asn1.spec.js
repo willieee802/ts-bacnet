@@ -1,6 +1,6 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baAsn1 = require("../../libjs/asn1");
+const baAsn1 = require("../../lib/asn1");
 
 describe("bacnet - ASN1 layer", () => {
   describe("decodeUnsigned", () => {

@@ -1,6 +1,6 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baBvlc = require("../../libjs/bvlc");
+const baBvlc = require("../../lib/bvlc");
 
 describe("bacnet - BVLC layer", () => {
   it("should successfuly encode and decode a package", () => {

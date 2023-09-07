@@ -1,6 +1,6 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baNpdu = require("../../libjs/npdu");
+const baNpdu = require("../../lib/npdu");
 
 describe("bacnet - NPDU layer", () => {
   it("should successfully decode the NPDU function", () => {

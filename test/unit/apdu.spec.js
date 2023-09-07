@@ -1,6 +1,6 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baApdu = require("../../libjs/apdu");
+const baApdu = require("../../lib/apdu");
 
 describe("bacnet - APDU layer", () => {
   describe("decodedType", () => {

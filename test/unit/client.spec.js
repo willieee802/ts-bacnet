@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const utils = require("./utils");
-const baEnum = require("../../libjs/enum");
-const client = require("../../libjs/client").default;
+const baEnum = require("../../lib/enum");
+const client = require("../../lib/client").default;
 
 const result = client.createBitstring([
   baEnum.ServicesSupported.ACKNOWLEDGE_ALARM,
