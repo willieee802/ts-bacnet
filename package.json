@@ -1,6 +1,6 @@
 {
   "name": "@verticgreens/bacnet",
-  "version": "0.2.11",
+  "version": "0.2.13",
   "description": "The BACnet protocol library written in pure JavaScript.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,7 +9,7 @@
     "lint": "jshint lib/ test/ index.js && eslint lib/** test/** examples/** index.js",
     "lint:fix": "eslint --fix lib/** test/** examples/** index.js",
     "lint:fix:dry": "eslint --fix-dry-run lib/** test/** examples/** index.js",
-    "test": "tsc && npm run test:unit && npm run test:integration",
+    "test": "cp tsconfig.testing.json tsconfig.json && tsc && npm run test:unit && npm run test:integration",
     "coverage": "nyc --reporter=lcov --reporter=text-summary --report-dir reports/coverage npm test",
     "coverage:compliance": "nyc --reporter=lcov --reporter=text-summary --report-dir reports/coverage npm run test:compliance",
     "coverage:all": "DEBUG=bacnet* nyc --reporter=lcov --reporter=text-summary --report-dir /reports/coverage npm run test:all",
@@ -24,8 +24,8 @@
     "compose:build": "docker-compose build",
     "compose:up": "docker-compose up --abort-on-container-exit --exit-code-from bacnet-client",
     "docker": "npm run compose:build && npm run compose:up",
-    "prepublishOnly": "npm run coverage && npm run docs",
-    "build": "tsup index.ts --format cjs,esm --dts"
+    "prepublishOnly": "npm run coverage && npm run docs && npm run build",
+    "build": "cp tsconfig.deployment.json tsconfig.json && tsup index.ts --format cjs,esm --dts"
   },
   "repository": {
     "type": "git",
@@ -54,9 +54,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BiancoRoyal/node-bacstack/issues"
+    "url": "https://github.com/VerticGreens/node-bacnet/issues"
   },
-  "homepage": "https://github.com/BiancoRoyal/node-bacstack#readme",
+  "homepage": "https://github.com/VerticGreens/node-bacnet",
   "dependencies": {
     "@types/debug": "^4.1.8",
     "@types/underscore": "^1.11.9",
@@ -81,11 +81,13 @@
     "docs",
     "examples",
     "lib",
-    "index.js"
+    "index.js",
+    "dist"
   ],
   "directories": {
     "example": "examples",
     "lib": "lib",
-    "test": "test"
+    "test": "test",
+    "dist": "dist"
   }
 }
