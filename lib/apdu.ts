@@ -26,10 +26,7 @@ export const getDecodedInvokeId = (buffer, offset) => {
 };
 
 export const encodeConfirmedServiceRequest = (
-  buffer: {
-    buffer: Buffer;
-    offset: number;
-  },
+  buffer: baAsn1.BufferWithOffset,
   type: baEnum.PduType,
   service: number,
   maxSegments?: number,
@@ -109,10 +106,7 @@ export const decodeSimpleAck = (buffer, offset) => {
 };
 
 export const encodeComplexAck = (
-  buffer: {
-    buffer: Buffer;
-    offset: number;
-  },
+  buffer: baAsn1.BufferWithOffset,
   type: baEnum.PduType,
   service?: number,
   invokeId?: number,

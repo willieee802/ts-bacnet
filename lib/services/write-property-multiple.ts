@@ -1,14 +1,7 @@
 import * as baAsn1 from "../asn1";
 import * as baEnum from "../enum";
 
-export const encode = (
-  buffer: {
-    buffer: Buffer;
-    offset: number;
-  },
-  objectId,
-  values
-) => {
+export const encode = (buffer: baAsn1.BufferWithOffset, objectId, values) => {
   baAsn1.encodeContextObjectId(buffer, 0, objectId.type, objectId.instance);
   baAsn1.encodeOpeningTag(buffer, 1);
   values.forEach((pValue) => {

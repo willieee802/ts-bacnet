@@ -37,7 +37,7 @@ export const encode = (buffer, lowLimit, highLimit) => {
 };
 
 interface value {
-  lowLimit?: number;
+  lowLimit?: number | Buffer;
   highLimit?: number;
   len?: number;
 }
@@ -58,8 +58,8 @@ export const decode = (buffer, offset, apduLen) => {
   }
   let decodedValue = baAsn1.decodeUnsigned(buffer, offset + len, result.value);
   len += decodedValue.len;
-  if (decodedValue.value <= baEnum.ASN1_MAX_INSTANCE) {
-    value.lowLimit = decodedValue.value;
+  if ((decodedValue.value as number) <= baEnum.ASN1_MAX_INSTANCE) {
+    value.lowLimit = decodedValue.value as number;
   }
   if (apduLen <= len) {
     return undefined;
@@ -74,8 +74,8 @@ export const decode = (buffer, offset, apduLen) => {
   }
   decodedValue = baAsn1.decodeUnsigned(buffer, offset + len, result.value);
   len += decodedValue.len;
-  if (decodedValue.value <= baEnum.ASN1_MAX_INSTANCE) {
-    value.highLimit = decodedValue.value;
+  if ((decodedValue.value as number) <= baEnum.ASN1_MAX_INSTANCE) {
+    value.highLimit = decodedValue.value as number;
   }
   value.len = len;
   return value;

@@ -36,7 +36,11 @@ interface value {
   len?: number;
 }
 
-export const decode = (buffer: Buffer, offset: number, apduLen: number) => {
+export const decode = (
+  buffer: baAsn1.BufferWithOffset,
+  offset: number,
+  apduLen: number
+) => {
   let len = 0;
   let value: value = {};
   let result;

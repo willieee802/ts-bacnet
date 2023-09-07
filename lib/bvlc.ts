@@ -1,3 +1,4 @@
+import { BufferWithOffset } from "./asn1";
 import * as baEnum from "./enum";
 
 const DEFAULT_BACNET_PORT = 47808;
@@ -7,7 +8,7 @@ type ipAddress =
   | `${number}.${number}.${number}.${number}:${number}`;
 
 export const encode = (
-  buffer: Buffer,
+  buffer: BufferWithOffset["buffer"],
   func: baEnum.BvlcResultPurpose,
   msgLength: number,
   originatingIP?: ipAddress
@@ -46,7 +47,7 @@ export const encode = (
   return baEnum.BVLC_HEADER_LENGTH;
 };
 
-export const decode = (buffer, _offset) => {
+export const decode = (buffer: BufferWithOffset["buffer"], _offset: number) => {
   let len;
   const func = buffer[1];
   const msgLength = (buffer[2] << 8) | (buffer[3] << 0);

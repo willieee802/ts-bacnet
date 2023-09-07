@@ -9,7 +9,7 @@ export const encode = (buffer, state, password) => {
 };
 
 interface value {
-  state?: number;
+  state?: number | Buffer;
   password?: number;
   len?: number;
 }
@@ -43,7 +43,7 @@ export const decode = (buffer, offset, apduLen) => {
       apduLen - (offset + len),
       result.value
     );
-    value.password = decodedValue.value;
+    value.password = decodedValue.value as number;
     len += decodedValue.len;
   }
   value.len = len;

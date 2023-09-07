@@ -1,3 +1,4 @@
+import { BufferWithOffset } from "./asn1";
 import * as baEnum from "./enum";
 
 const DEFAULT_HOP_COUNT = 0xff;
@@ -33,10 +34,7 @@ const decodeTarget = (buffer, offset) => {
 };
 
 const encodeTarget = (
-  buffer: {
-    buffer: Buffer;
-    offset: number;
-  },
+  buffer: BufferWithOffset,
   target: destinationOrSource
 ) => {
   buffer.buffer[buffer.offset++] = (target.net & 0xff00) >> 8;
@@ -53,14 +51,14 @@ const encodeTarget = (
   }
 };
 
-export const decodeFunction = (buffer: Buffer, offset: number) => {
+export const decodeFunction = (buffer: BufferWithOffset, offset: number) => {
   if (buffer[offset + 0] !== BACNET_PROTOCOL_VERSION) {
     return undefined;
   }
   return buffer[offset + 1];
 };
 
-export const decode = (buffer: Buffer, offset: number) => {
+export const decode = (buffer: BufferWithOffset, offset: number) => {
   let adrLen;
   const orgOffset = offset;
   offset++;
@@ -114,10 +112,7 @@ export interface destinationOrSource {
 }
 
 export const encode = (
-  buffer: {
-    buffer: Buffer;
-    offset: number;
-  },
+  buffer: BufferWithOffset,
   funct: number,
   destination?: destinationOrSource,
   source?: destinationOrSource,

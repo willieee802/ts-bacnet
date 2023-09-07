@@ -208,14 +208,14 @@ class Client extends EventEmitter {
    * @returns {{offset: (number), buffer: *}}
    * @private
    */
-  _getBuffer(isForwarded?: boolean) {
+  _getBuffer(isForwarded?: boolean): baAsn1.BufferWithOffset {
     return Object.assign(
       {},
       {
         buffer: Buffer.alloc(this._transport.getMaxPayload()),
         offset: isForwarded ? BVLC_FWD_HEADER_LENGTH : BVLC_HEADER_LENGTH,
       }
-    );
+    ) as unknown as baAsn1.BufferWithOffset;
   }
 
   /**
@@ -349,6 +349,7 @@ class Client extends EventEmitter {
         );
       }
       this._segmentStore.push(
+        //@ts-ignore
         apdubuffer.buffer.slice(0, length + apduHeaderLen)
       );
     } else {

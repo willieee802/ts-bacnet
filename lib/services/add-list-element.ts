@@ -15,7 +15,11 @@ export const encode = (buffer, objectId, propertyId, arrayIndex, values) => {
   baAsn1.encodeClosingTag(buffer, 3);
 };
 
-export const decode = (buffer: Buffer, offset: number, apduLen: number) => {
+export const decode = (
+  buffer: baAsn1.BufferWithOffset,
+  offset: number,
+  apduLen: number
+) => {
   let len = 0;
   let result;
   let decodedValue;
