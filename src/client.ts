@@ -811,9 +811,12 @@ export default class Client extends EventEmitter {
       highLimit: options.highLimit,
     };
 
-    const hasForwardedFrom =
-      typeof receiver !== "string" && receiver.forwardedFrom;
-    const buffer = this._getBuffer(!!hasForwardedFrom);
+    // const hasForwardedFrom =
+    //   typeof receiver !== "string" && receiver.forwardedFrom;
+    // const buffer = this._getBuffer(!!hasForwardedFrom);
+
+    //@ts-ignore
+    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE,
@@ -2569,7 +2572,7 @@ export default class Client extends EventEmitter {
         address: receiver,
       };
     }
-    if (!!(typeof receiver !== "string" && receiver.forwardedFrom)) {
+    if (receiver && receiver.forwardedFrom) {
       // Remote node address given, forward to BBMD
       baBvlc.encode(
         buffer.buffer,

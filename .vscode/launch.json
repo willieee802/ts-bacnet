@@ -18,6 +18,23 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${file}"]
+    },
+    // mocha testing on port 47808
+    {
+      "name": "Mocha Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "mocha",
+      "runtimeArgs": [
+        "--timeout",
+        "999999",
+        "--colors",
+        "-r",
+        "ts-node/register",
+        // "--inspect-brk=47808",
+        "${file}"
+      ],
+      "port": 47808
     }
   ]
 }
