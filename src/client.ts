@@ -1001,7 +1001,7 @@ export default class Client extends EventEmitter {
    * });
    */
   writeProperty(
-    receiver: Sender | Sender["forwardedFrom"],
+    receiver: Sender | Sender["address"],
     objectId: BacnetObjectIdentity,
     propertyId: baEnum.PropertyIdentifier,
     values: SetBacnetValueObjectValue[],
@@ -1012,7 +1012,7 @@ export default class Client extends EventEmitter {
       arrayIndex?: number;
       priority?: number;
     },
-    next: (error: BacnetError | Error | null) => Promise<void>
+    next: (error: BacnetError | Error | null) => Promise<void> | void
   ) {
     //@ts-ignore
     next = next || options;
@@ -1097,7 +1097,10 @@ export default class Client extends EventEmitter {
       maxApdu?: baEnum.MaxApduLengthAccepted;
       invokeId?: number;
     },
-    next: (error: BacnetError | Error, res?: BACReadMultiple) => Promise<void>
+    next: (
+      error: BacnetError | Error,
+      res?: BACReadMultiple
+    ) => Promise<void> | void
   ) {
     //@ts-ignore
     next = next || options;
@@ -1140,7 +1143,7 @@ export default class Client extends EventEmitter {
     this.sendBvlc(receiver, buffer);
     this._addCallback(settings.invokeId, (err, data) => {
       if (err) {
-        return void next(err);
+        return next(err);
       }
       const result = baServices.readPropertyMultiple.decodeAcknowledge(
         data.buffer,
@@ -1148,7 +1151,7 @@ export default class Client extends EventEmitter {
         data.length
       );
       if (!result) {
-        return void next(new Error("INVALID_DECODING"));
+        return next(new Error("INVALID_DECODING"));
       }
       next(null, result);
     });

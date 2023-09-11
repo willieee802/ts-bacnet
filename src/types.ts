@@ -1,19 +1,17 @@
 import {
   ApplicationTag,
   CharacterStringEncoding,
-  NpduControlPriority,
   ObjectType,
   PropertyIdentifier,
 } from "./enum";
 
 export interface BacnetObjectIdentity {
-  type: number;
-  instance: ObjectType;
+  type: ObjectType;
+  instance: number;
 }
 
 export interface SetBACnetValueMultiple {
   objectId: BacnetObjectIdentity;
-
   values: SetBACnetValueObject[];
 }
 
