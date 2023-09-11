@@ -291,7 +291,9 @@ export default class Client extends EventEmitter {
     sequencenumber,
     actualWindowSize
   ) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE,
@@ -843,7 +845,9 @@ export default class Client extends EventEmitter {
    * client.timeSync('192.168.1.43', new Date());
    */
   timeSync(receiver, dateTime) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeUnconfirmedServiceRequest(
       buffer,
@@ -866,7 +870,9 @@ export default class Client extends EventEmitter {
    * client.timeSyncUTC('192.168.1.43', new Date());
    */
   timeSyncUTC(receiver, dateTime) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeUnconfirmedServiceRequest(
       buffer,
@@ -911,7 +917,9 @@ export default class Client extends EventEmitter {
           ? options.arrayIndex
           : baEnum.ASN1_ARRAY_ALL,
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1013,7 +1021,9 @@ export default class Client extends EventEmitter {
       arrayIndex: options.arrayIndex || baEnum.ASN1_ARRAY_ALL,
       priority: options.priority || baEnum.ASN1_NO_PRIORITY,
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1190,7 +1200,7 @@ export default class Client extends EventEmitter {
       maxApdu?: baEnum.MaxApduLengthAccepted;
       invokeId?: number;
     },
-    next: (error: BACError | null, res: BACReadMultiple) => Promise<void>
+    next: (error: BACError | null) => Promise<void>
   ) {
     //@ts-ignore
     next = next || options;
@@ -1200,11 +1210,15 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
         baEnum.NpduControlBit.EXPECTING_REPLY,
+      //@ts-ignore
       receiver
     );
     baApdu.encodeConfirmedServiceRequest(
@@ -1359,7 +1373,9 @@ export default class Client extends EventEmitter {
       invokeId: options.invokeId || this._getInvokeId(),
       password: options.password,
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1416,7 +1432,9 @@ export default class Client extends EventEmitter {
       invokeId: options.invokeId || this._getInvokeId(),
       password: options.password,
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1457,7 +1475,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1515,7 +1535,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1567,7 +1589,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1644,7 +1668,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1707,7 +1733,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1830,7 +1858,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1872,7 +1902,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1916,7 +1948,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -1966,7 +2000,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -2013,7 +2049,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -2062,7 +2100,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -2125,7 +2165,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -2184,7 +2226,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -2219,7 +2263,9 @@ export default class Client extends EventEmitter {
    * @param data
    */
   unconfirmedPrivateTransfer(receiver, vendorId, serviceNumber, data) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeUnconfirmedServiceRequest(
       buffer,
@@ -2245,7 +2291,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -2294,7 +2342,9 @@ export default class Client extends EventEmitter {
    * @param eventNotification
    */
   unconfirmedEventNotification(receiver, eventNotification) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeUnconfirmedServiceRequest(
       buffer,
@@ -2320,7 +2370,9 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
@@ -2365,7 +2417,9 @@ export default class Client extends EventEmitter {
     value,
     options = {}
   ) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeComplexAck(
       buffer,
@@ -2384,7 +2438,9 @@ export default class Client extends EventEmitter {
   }
 
   readPropertyMultipleResponse(receiver, invokeId, values) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeComplexAck(
       buffer,
@@ -2405,7 +2461,9 @@ export default class Client extends EventEmitter {
    * @param {number} vendorId - The numeric ID assigned to the organisation providing this application.
    */
   iAmResponse(receiver, deviceId, segmentation, vendorId) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeUnconfirmedServiceRequest(
       buffer,
@@ -2430,7 +2488,9 @@ export default class Client extends EventEmitter {
    * @param objectName
    */
   iHaveResponse(receiver, deviceId, objectId, objectName) {
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const buffer = this._getBuffer(
+      !!(typeof receiver !== "string" && receiver.forwardedFrom)
+    );
     baNpdu.encode(buffer, baEnum.NpduControlPriority.NORMAL_MESSAGE, receiver);
     baApdu.encodeUnconfirmedServiceRequest(
       buffer,
@@ -2509,7 +2569,7 @@ export default class Client extends EventEmitter {
         address: receiver,
       };
     }
-    if (receiver && receiver.forwardedFrom) {
+    if (!!(typeof receiver !== "string" && receiver.forwardedFrom)) {
       // Remote node address given, forward to BBMD
       baBvlc.encode(
         buffer.buffer,
