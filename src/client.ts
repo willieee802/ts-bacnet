@@ -10,6 +10,18 @@ import * as baApdu from "./apdu";
 import * as baNpdu from "./npdu";
 import * as baBvlc from "./bvlc";
 import * as baEnum from "./enum";
+import {
+  BACError,
+  BACReadMultiple,
+  BacnetDevice,
+  BacnetObjectIdentity,
+  BufferWithOffset,
+  ReadProperty,
+  Sender,
+  SetBACnetValueMultiple,
+  SetBacnetValueObjectValue,
+} from "./types";
+import enums from "./enums";
 
 export type receiverString = string;
 export type receiverObject = {
@@ -216,14 +228,14 @@ export default class Client extends EventEmitter {
    * @returns {{offset: (number), buffer: *}}
    * @private
    */
-  _getBuffer(isForwarded?: boolean): baAsn1.BufferWithOffset {
+  _getBuffer(isForwarded?: boolean): BufferWithOffset {
     return Object.assign(
       {},
       {
         buffer: Buffer.alloc(this._transport.getMaxPayload()),
         offset: isForwarded ? BVLC_FWD_HEADER_LENGTH : BVLC_HEADER_LENGTH,
       }
-    ) as unknown as baAsn1.BufferWithOffset;
+    ) as unknown as BufferWithOffset;
   }
 
   /**
@@ -763,7 +775,20 @@ export default class Client extends EventEmitter {
    *
    * client.whoIs();
    */
-  whoIs(receiver, options) {
+  whoIs(
+    receiver:
+      | string
+      | {
+          address: string;
+          forwardedFrom?: string;
+          lowLimit?: number;
+          highLimit?: number;
+        },
+    options?: {
+      lowLimit?: number;
+      highLimit?: number;
+    }
+  ): void {
     if (!options) {
       if (
         receiver &&
@@ -783,10 +808,14 @@ export default class Client extends EventEmitter {
       lowLimit: options.lowLimit,
       highLimit: options.highLimit,
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+
+    const hasForwardedFrom =
+      typeof receiver !== "string" && receiver.forwardedFrom;
+    const buffer = this._getBuffer(!!hasForwardedFrom);
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE,
+      //@ts-ignore
       receiver,
       null,
       DEFAULT_HOP_COUNT,
@@ -960,7 +989,21 @@ export default class Client extends EventEmitter {
    *   console.log('value: ', value);
    * });
    */
-  writeProperty(receiver, objectId, propertyId, values, options, next) {
+  writeProperty(
+    receiver: Sender | Sender["forwardedFrom"],
+    objectId: BacnetObjectIdentity,
+    propertyId: baEnum.PropertyIdentifier,
+    values: SetBacnetValueObjectValue[],
+    options: {
+      maxSegments?: baEnum.MaxSegmentsAccepted;
+      maxApdu?: baEnum.MaxApduLengthAccepted;
+      invokeId?: number;
+      arrayIndex?: number;
+      priority?: number;
+    },
+    next: (error: BacnetError | Error | null) => Promise<void>
+  ) {
+    //@ts-ignore
     next = next || options;
     const settings = {
       maxSegments:
@@ -975,6 +1018,7 @@ export default class Client extends EventEmitter {
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
         baEnum.NpduControlBit.EXPECTING_REPLY,
+      //@ts-ignore Todo somehow types do not match at all
       receiver,
       null,
       DEFAULT_HOP_COUNT,
@@ -1032,7 +1076,17 @@ export default class Client extends EventEmitter {
    *   console.log('value: ', value);
    * });
    */
-  readPropertyMultiple(receiver, propertiesArray, options, next) {
+  readPropertyMultiple(
+    receiver: Sender | Sender["address"],
+    propertiesArray: ReadProperty[],
+    options: {
+      maxSegments?: baEnum.MaxSegmentsAccepted;
+      maxApdu?: baEnum.MaxApduLengthAccepted;
+      invokeId?: number;
+    },
+    next: (error: BacnetError | Error, res?: BACReadMultiple) => Promise<void>
+  ) {
+    //@ts-ignore
     next = next || options;
     const settings = {
       maxSegments:
@@ -1040,19 +1094,22 @@ export default class Client extends EventEmitter {
       maxApdu: options.maxApdu || baEnum.MaxApduLengthAccepted.OCTETS_1476,
       invokeId: options.invokeId || this._getInvokeId(),
     };
-    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
+    const isForwarded = typeof receiver !== "string" && receiver.forwardedFrom;
+    const buffer = this._getBuffer(!!isForwarded);
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
         baEnum.NpduControlBit.EXPECTING_REPLY,
+      //@ts-ignore Todo somehow types do not match at all
       receiver,
       null,
       DEFAULT_HOP_COUNT,
       baEnum.NetworkLayerMessageType.WHO_IS_ROUTER_TO_NETWORK,
       0
     );
-    const type =
+    const type: baEnum.PduType =
       baEnum.PduType.CONFIRMED_REQUEST |
+      //@ts-ignore
       (settings.maxSegments !== baEnum.MaxSegmentsAccepted.SEGMENTS_0
         ? baEnum.PduConReqBit.SEGMENTED_RESPONSE_ACCEPTED
         : 0);
@@ -1118,7 +1175,24 @@ export default class Client extends EventEmitter {
    *   console.log('value: ', value);
    * });
    */
-  writePropertyMultiple(receiver, values, options, next) {
+  writePropertyMultiple(
+    receiver:
+      | string
+      | {
+          address: string;
+          forwardedFrom?: string;
+          lowLimit?: number;
+          highLimit?: number;
+        },
+    values: SetBACnetValueMultiple[],
+    options: {
+      maxSegments?: baEnum.MaxSegmentsAccepted;
+      maxApdu?: baEnum.MaxApduLengthAccepted;
+      invokeId?: number;
+    },
+    next: (error: BACError | null, res: BACReadMultiple) => Promise<void>
+  ) {
+    //@ts-ignore
     next = next || options;
     const settings = {
       maxSegments:
@@ -1549,16 +1623,21 @@ export default class Client extends EventEmitter {
    * @param next
    */
   subscribeCov(
-    receiver,
-    objectId,
-    subscribeId,
-    cancel,
-    issueConfirmedNotifications,
-    lifetime,
-    options,
-    next
+    receiver: BacnetDevice["header"]["sender"],
+    objectId: BacnetObjectIdentity,
+    subscribeId: number,
+    cancel: (() => void) | false,
+    issueConfirmedNotifications: boolean,
+    lifetime: number | 0,
+    options: {
+      maxSegments?: number;
+      maxApdu?: number;
+      invokeId?: number;
+    },
+    nextFunc?: (error?: Error) => void
   ) {
-    next = next || options;
+    // if next doesnt exist then options is probably the next function
+    const next = nextFunc || (options as unknown as (error?: Error) => void);
     const settings = {
       maxSegments:
         options.maxSegments || baEnum.MaxSegmentsAccepted.SEGMENTS_65,
@@ -1570,6 +1649,7 @@ export default class Client extends EventEmitter {
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
         baEnum.NpduControlBit.EXPECTING_REPLY,
+      // @ts-ignore TODO types not matching with documentation and code
       receiver
     );
     baApdu.encodeConfirmedServiceRequest(

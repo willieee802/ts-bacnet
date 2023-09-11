@@ -1,5 +1,6 @@
 import * as baAsn1 from "../asn1";
 import * as baEnum from "../enum";
+import { BufferWithOffset } from "../types";
 
 export const encode = (
   buffer,
@@ -37,7 +38,7 @@ interface value {
 }
 
 export const decode = (
-  buffer: baAsn1.BufferWithOffset,
+  buffer: BufferWithOffset,
   offset: number,
   apduLen: number
 ) => {

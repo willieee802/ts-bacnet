@@ -1,5 +1,6 @@
 import * as baAsn1 from "./asn1";
 import * as baEnum from "./enum";
+import { BufferWithOffset } from "./types";
 
 export const getDecodedType = (buffer, offset) => {
   return buffer[offset];
@@ -26,7 +27,7 @@ export const getDecodedInvokeId = (buffer, offset) => {
 };
 
 export const encodeConfirmedServiceRequest = (
-  buffer: baAsn1.BufferWithOffset,
+  buffer: BufferWithOffset,
   type: baEnum.PduType,
   service: number,
   maxSegments?: number,
@@ -106,7 +107,7 @@ export const decodeSimpleAck = (buffer, offset) => {
 };
 
 export const encodeComplexAck = (
-  buffer: baAsn1.BufferWithOffset,
+  buffer: BufferWithOffset,
   type: baEnum.PduType,
   service?: number,
   invokeId?: number,

@@ -1,5 +1,5 @@
-import { BufferWithOffset } from "./asn1";
 import * as baEnum from "./enum";
+import { BufferWithOffset } from "./types";
 
 const DEFAULT_HOP_COUNT = 0xff;
 const BACNET_PROTOCOL_VERSION = 1;

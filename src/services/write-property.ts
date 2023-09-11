@@ -1,8 +1,9 @@
 import * as baAsn1 from "../asn1";
 import * as baEnum from "../enum";
+import { BufferWithOffset } from "../types";
 
 export const encode = (
-  buffer: baAsn1.BufferWithOffset,
+  buffer: BufferWithOffset,
   objectType,
   objectInstance,
   propertyId,

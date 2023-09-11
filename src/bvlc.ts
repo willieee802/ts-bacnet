@@ -1,5 +1,5 @@
-import { BufferWithOffset } from "./asn1";
 import * as baEnum from "./enum";
+import { BufferWithOffset } from "./types";
 
 const DEFAULT_BACNET_PORT = 47808;
 

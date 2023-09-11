@@ -1,5 +1,6 @@
 import * as baAsn1 from "../asn1";
 import * as baEnum from "../enum";
+import { BufferWithOffset } from "../types";
 import { DecodedValue } from "./write-property";
 
 export const encode = (buffer, objectId, propertyId, arrayIndex, values) => {
@@ -16,7 +17,7 @@ export const encode = (buffer, objectId, propertyId, arrayIndex, values) => {
 };
 
 export const decode = (
-  buffer: baAsn1.BufferWithOffset,
+  buffer: BufferWithOffset,
   offset: number,
   apduLen: number
 ) => {

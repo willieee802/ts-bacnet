@@ -5,10 +5,7 @@ import baEnum from "./enums";
 export const START_YEAR = 1900;
 export const MAX_YEARS = 256;
 
-export type BufferWithOffset = {
-  buffer: Buffer | Uint8Array;
-  offset: number;
-};
+
 
 interface resObj {
   value: number;

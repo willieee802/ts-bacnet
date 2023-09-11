@@ -1,6 +1,6 @@
 {
   "name": "@verticgreens/bacnet",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "The BACnet protocol library written in pure JavaScript.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
