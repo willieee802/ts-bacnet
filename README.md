@@ -1,14 +1,6 @@
-![Platform Node](http://b.repl.ca/v1/Platform-Node-green.png)
-![Contrib BACnet®](http://b.repl.ca/v1/Contrib-BACnet®-green.png)
-![NodeJS_Version](http://b.repl.ca/v1/NodeJS-LTS-green.png)
-[![NPM download](https://img.shields.io/npm/dm/node-bacnet.svg)](http://www.npm-stats.com/~packages/node-bacnet)
-[![Build Status](https://travis-ci.org/BiancoRoyal/node-bacstack.svg?branch=master)](https://travis-ci.org/BiancoRoyal/node-bacstack)
-[![Coverage Status](https://coveralls.io/repos/github/BiancoRoyal/node-bacstack/badge.svg?branch=master)](https://coveralls.io/github/BiancoRoyal/node-bacstack?branch=master)
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/BiancoRoyal/node-bacstack)
+# node-bacnet (typescript edition)
 
-# node-bacnet
-
-[![node-bacnetLogo64](images/bacnet-icon-quad64.png)](https://www.npmjs.com/package/node-bacnet)
+[![node-bacnetLogo64](images/bacnet-icon-quad64.png)](https://www.npmjs.com/package/@verticgreens/bacnet)
 
 The BACnet® protocol library written in pure JavaScript.
 
@@ -19,10 +11,10 @@ BACnet® is a protocol to interact with building automation devices defined by A
 Add node-bacnet to your project by using:
 
 ``` sh
-npm install --save node-bacnet
+npm install --save @verticgreens/bacnet
 ```
 
-The API documentation is available under **[GitHub Page of Docs](https://biancoroyal.github.io/node-bacstack/)**.
+The API documentation is available under **[GitHub Page of Docs](https://biancoroyal.github.io/bacnet/)**.
 
 ### Features
 
@@ -75,14 +67,12 @@ Implementing and maintaining a protocol stack is a lot of work, therefore any
 help is appreciated, from creating issues, to contributing documentation, fixing
 issues, sending pull requests and adding new features.
 
-Please follow the [Contribution Guide](CONTRIBUTING.md) when submitting any
-changes. Ask the active NPM publishers if you need some advice to start your contribution!
 
 ## License
 
 [The MIT License](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2018-2020 Community Driven
+Copyright (c) 2018-2023 Community Driven
 
 Copyright (c) 2017-2019 Fabio Huser
 
