@@ -21,7 +21,7 @@ import {
   SetBACnetValueMultiple,
   SetBacnetValueObjectValue,
 } from "./types";
-import enums from "./enums";
+
 
 export type receiverString = string;
 export type receiverObject = {
@@ -83,8 +83,14 @@ const confirmedServiceMap = {
   [beC.CONFIRMED_PRIVATE_TRANSFER]: "privateTransfer",
 };
 
-class BacnetError extends Error {
-  public bacnetErrorClass: baEnum.ErrorClass;
+const errorReasonEnums = {
+  BacnetAbort: baEnum.RejectReason,
+};
+
+type reasonClass = "BacnetAbort";
+
+export class BacnetError extends Error {
+  public bacnetErrorClass: baEnum.ErrorClass | baEnum.AbortReason;
   public bacnetErrorCode: baEnum.ErrorCode;
   public bacnetAbortReason: baEnum.AbortReason;
 
@@ -97,6 +103,22 @@ class BacnetError extends Error {
     this.bacnetErrorClass = bacnetErrorClass;
     this.bacnetErrorCode = bacnetErrorCode;
   }
+}
+
+export function bacnetErrorToString(err: Error | BACError) {
+  const isError = err instanceof Error || err instanceof BacnetError;
+  if (!isError) return;
+  const message = err.message as `${reasonClass} - Reason:${number}'`;
+
+  const reasonClass = message?.split(" - ")[0];
+  const reason = +message?.split("Reason:")[1]?.split(" ")[0];
+
+  // if (typeof reason !== "number") return;
+  if (!errorReasonEnums[reasonClass]) return;
+
+  const reasonString = errorReasonEnums[reasonClass][reason];
+
+  return reasonClass + ": " + reasonString;
 }
 
 /**
@@ -270,6 +292,8 @@ export default class Client extends EventEmitter {
     const err = new BacnetError("BacnetAbort - Reason:" + reason);
 
     err.bacnetAbortReason = reason;
+    //@ts-ignore
+    err.bacnetErrorClass = baEnum.AbortReason;
     this._invokeCallback(invokeId, err);
   }
 
@@ -291,9 +315,7 @@ export default class Client extends EventEmitter {
     sequencenumber,
     actualWindowSize
   ) {
-    const buffer = this._getBuffer(
-      !!(typeof receiver !== "string" && receiver.forwardedFrom)
-    );
+    const buffer = this._getBuffer(receiver && receiver.forwardedFrom);
     baNpdu.encode(
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE,
@@ -908,7 +930,25 @@ export default class Client extends EventEmitter {
    *   console.log('value: ', value);
    * });
    */
-  readProperty(receiver, objectId, propertyId, options, next) {
+
+  readProperty(
+    receiver: Sender | Sender["address"],
+    objectId: BacnetObjectIdentity,
+    propertyId: {
+      id: baEnum.PropertyIdentifier;
+    },
+    options: {
+      maxSegments?: baEnum.MaxSegmentsAccepted;
+      maxApdu?: baEnum.MaxApduLengthAccepted;
+      invokeId?: number;
+      arrayIndex?: number;
+    },
+    next: (
+      error: BacnetError | Error,
+      res?: BACReadMultiple
+    ) => Promise<void> | void
+  ) {
+    //@ts-ignore
     next = next || options;
     const settings = {
       maxSegments:
@@ -927,6 +967,7 @@ export default class Client extends EventEmitter {
       buffer,
       baEnum.NpduControlPriority.NORMAL_MESSAGE |
         baEnum.NpduControlBit.EXPECTING_REPLY,
+      //@ts-ignore
       receiver,
       null,
       DEFAULT_HOP_COUNT,
@@ -935,6 +976,7 @@ export default class Client extends EventEmitter {
     );
     const type =
       baEnum.PduType.CONFIRMED_REQUEST |
+      //@ts-ignore
       (settings.maxSegments !== baEnum.MaxSegmentsAccepted.SEGMENTS_0
         ? baEnum.PduConReqBit.SEGMENTED_RESPONSE_ACCEPTED
         : 0);

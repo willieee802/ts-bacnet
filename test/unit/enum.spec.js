@@ -1,7 +1,6 @@
 const expect = require("chai").expect;
 const bacnetEnum = require("../../lib/enum");
 
-console.log(bacnetEnum);
 
 describe("bacnet - ENUM tests", (done) => {
   it("enum get name of BOOLEAN should be defined with 1", () => {

@@ -1,6 +1,6 @@
 {
   "name": "@verticgreens/bacnet",
-  "version": "0.2.17",
+  "version": "0.2.19",
   "description": "The BACnet protocol library written in pure JavaScript.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,7 +14,7 @@
     "coverage:compliance": "nyc --reporter=lcov --reporter=text-summary --report-dir reports/coverage npm run test:compliance",
     "coverage:all": "DEBUG=bacnet* nyc --reporter=lcov --reporter=text-summary --report-dir /reports/coverage npm run test:all",
     "test:unit": "DEBUG=bacnet* mocha test/unit/*.spec.js",
-    "test:integration": "DEBUG=bacnet* mocha --debug-brk test/integration/*.spec.js --timeout 5000",
+    "test:integration": "DEBUG=bacnet* mocha test/integration/*.spec.js --timeout 5000",
     "test:compliance": "DEBUG=bacnet* mocha test/compliance/*.spec.js --timeout 5000",
     "test:all": "DEBUG=bacnet* mocha test/unit/*.spec.js test/integration/*.spec.js test/compliance/*.spec.js --timeout 5000",
     "docs": "cp -r images docs && jsdoc -r -d ./docs -t node_modules/@mocha/docdash ./lib ./dist/index.js ./README.md",

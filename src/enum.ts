@@ -1,3 +1,5 @@
+// Check out https://reference.opcfoundation.org/BACnet/v200/docs/10.4
+
 /**
  * Turn an enum into a string suitable for debugging.
  * If value is not found in the enum the value itself is returned as string
@@ -32,7 +34,7 @@ const trace = Debugger("bacnet=enum=trace");
 
 
 function invertEnum(
-  enumToInvert: Record<string, number>
+  enumToInvert: Record<string, number> | AnyEnum
 ): Record<number, string> {
   const invertedEnum: Record<number, string> = {};
   Object.keys(enumToInvert).forEach((key) => {
@@ -42,7 +44,7 @@ function invertEnum(
 }
 
 export function getEnumName(
-  group: Record<AnyEnum, number>,
+  group: AnyEnum,
   value: number,
   addNumberValue = true,
   undefinedFallbackValue = undefined
@@ -54,9 +56,9 @@ export function getEnumName(
         '"'
     );
   }
-  let foundEntry = null;
+  let foundEntry: string | null;
   try {
-    const invertedGroup = invert(group);
+    const invertedGroup = invertEnum(group);
     foundEntry = invertedGroup[value];
     if (foundEntry === undefined && undefinedFallbackValue) {
       foundEntry = undefinedFallbackValue;
