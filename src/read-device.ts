@@ -244,13 +244,7 @@ function getAllPropertiesManually(
   });
 }
 
-/**
- * Reads ou one bit out of an buffer
- * @param buffer
- * @param i
- * @param bit
- * @returns {number}
- */
+
 function readBit(buffer, i, bit) {
   return (buffer[i] >> bit) % 2;
 }
@@ -270,13 +264,7 @@ function setBit(buffer, i, bit, value) {
   }
 }
 
-/**
- * Parses a Bitstring and returns array with all true values
- * @param buffer
- * @param bitsUsed
- * @param usedEnum
- * @returns {[]}
- */
+
 function handleBitString(buffer: Buffer, bitsUsed: number, usedEnum: AnyEnum) {
   const res: number[] = [];
   for (let i = 0; i < bitsUsed; i++) {
