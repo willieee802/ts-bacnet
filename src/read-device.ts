@@ -277,7 +277,6 @@ function handleBitString(buffer: Buffer, bitsUsed: number, usedEnum: AnyEnum) {
 /**
  * Parses a property value
  * @param address
- * @param objId
  * @param parentType
  * @param value
  * @param supportsMultiple
@@ -431,7 +430,6 @@ export function parseValue(
       case enums.ApplicationTag.CONTEXT_SPECIFIC_DECODED:
         parseValue(
           address,
-          objId,
           parentType,
           value.value,
           supportsMultiple,
@@ -544,7 +542,6 @@ function parseDeviceObject(address, obj, parent, supportsMultiple, callback) {
         cbCount++;
         parseValue(
           address,
-          devObj.id,
           parent.type,
           val,
           supportsMultiple,

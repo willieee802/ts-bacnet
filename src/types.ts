@@ -35,7 +35,7 @@ interface ValueAddress {
 
 export interface BacnetDevice {
   len: number;
-  type: number; // should be a enum in "enum.ts" but not sure which
+  type: ObjectType.DEVICE; // should be a enum in "enum.ts" but not sure which
   service: number;
   header: Header;
   payload: Payload;

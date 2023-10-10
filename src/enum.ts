@@ -25,13 +25,10 @@
  * console.log(s); // "PRESENT_VALUE(85)"
  */
 
-import { invert } from "underscore";
 import Debugger from "debug";
 
 const debug = Debugger("bacnet=enum=debug");
 const trace = Debugger("bacnet=enum=trace");
-
-
 
 // function invertEnum(
 //   enumToInvert: AnyEnum
@@ -46,11 +43,10 @@ const trace = Debugger("bacnet=enum=trace");
 function invertEnum(enumToInvert: AnyEnum) {
   return Object.keys(enumToInvert).reduce((acc, key) => {
     const val = enumToInvert[key];
-    acc[val] = key;
+    acc[val] = key as AnyEnumKey;
     return acc;
-  }, {} as Record<number, string>);
+  }, {} as Record<number, AnyEnumKey>);
 }
-  
 
 export function getEnumName(
   group: AnyEnum,
@@ -65,7 +61,7 @@ export function getEnumName(
         '"'
     );
   }
-  let foundEntry: AnyEnum;
+  let foundEntry: AnyEnumKey;
   try {
     const invertedGroup = invertEnum(group);
     foundEntry = invertedGroup[value];
@@ -73,9 +69,11 @@ export function getEnumName(
       foundEntry = undefinedFallbackValue;
     }
     if (foundEntry === undefined) {
-      foundEntry = value.toString();
+      foundEntry = value.toString() as unknown as AnyEnumKey;
     } else if (addNumberValue) {
-      foundEntry += "(" + value + ")";
+      let strinmanipulation = "";
+      strinmanipulation += "(" + value + ")";
+      foundEntry = (foundEntry + strinmanipulation) as unknown as AnyEnumKey;
     }
   } catch (e) {
     trace(e.message);
@@ -185,9 +183,8 @@ export enum ErrorClass {
   VT = 6,
   COMMUNICATION = 7,
 }
-
 export const ErrorClassName = invertEnum(
-  ErrorClass as unknown as Record<string, number>
+  ErrorClass as unknown as Record<AnyEnumKey, number>
 );
 
 export enum ErrorCode {
@@ -327,7 +324,7 @@ export enum ErrorCode {
 }
 
 export const ErrorCodeName = invertEnum(
-  ErrorCode as unknown as Record<string, number>
+  ErrorCode as unknown as Record<AnyEnumKey, number>
 );
 
 export enum AccessAuthenticationFactorDisable {
@@ -2062,7 +2059,7 @@ export enum ApplicationTag {
 }
 
 export const ApplicationTagName = invertEnum(
-  ApplicationTag as unknown as Record<string, number>
+  ApplicationTag as unknown as Record<AnyEnumKey, number>
 );
 
 // ASHRE 135-2016 - J.2.1.1 BVLC-Result= Format - Enumerators
@@ -2508,3 +2505,106 @@ export type AnyEnum =
   | typeof ReadRangeType
   | typeof ReinitializedState
   | typeof TimeStamp;
+
+
+  export type AnyEnumKey =
+    | keyof typeof ConfirmedServiceChoice
+    | keyof typeof UnconfirmedServiceChoice
+    | keyof typeof AbortReason
+    | keyof typeof RejectReason
+    | keyof typeof ErrorClass
+    | keyof typeof ErrorCode
+    | keyof typeof AccessAuthenticationFactorDisable
+    | keyof typeof AccessCredentialDisable
+    | keyof typeof AccessCredentialDisableReason
+    | keyof typeof AccessEvent
+    | keyof typeof AccessPassbackMode
+    | keyof typeof AccessUserType
+    | keyof typeof AccessZoneOccupancyState
+    | keyof typeof Action
+    | keyof typeof AuthenticationFactorType
+    | keyof typeof AuthenticationStatus
+    | keyof typeof AuthorizationExemption
+    | keyof typeof AuthorizationMode
+    | keyof typeof BackupState
+    | keyof typeof BinaryLightingPV
+    | keyof typeof BinaryPV
+    | keyof typeof DeviceStatus
+    | keyof typeof DoorAlarmState
+    | keyof typeof DoorSecuredStatus
+    | keyof typeof DoorStatus
+    | keyof typeof DoorValue
+    | keyof typeof EngineeringUnits
+    | keyof typeof EscalatorFault
+    | keyof typeof EscalatorMode
+    | keyof typeof EscalatorOperationDirection
+    | keyof typeof EventState
+    | keyof typeof EventType
+    | keyof typeof FaultType
+    | keyof typeof FileAccessMethod
+    | keyof typeof IPMode
+    | keyof typeof LifeSafetyMode
+    | keyof typeof LifeSafetyOperation
+    | keyof typeof LifeSafetyState
+    | keyof typeof LiftCarDirection
+    | keyof typeof LiftCarDoorCommand
+    | keyof typeof LiftCarDriveStatus
+    | keyof typeof LiftCarMode
+    | keyof typeof LiftFault
+    | keyof typeof LiftGroupMode
+    | keyof typeof LightingInProgress
+    | keyof typeof LightingOperation
+    | keyof typeof LightingTransition
+    | keyof typeof LockStatus
+    | keyof typeof LoggingType
+    | keyof typeof Maintenance
+    | keyof typeof NetworkNumberQuality
+    | keyof typeof NetworkPortCommand
+    | keyof typeof NetworkType
+    | keyof typeof NodeType
+    | keyof typeof NotifyType
+    | keyof typeof ObjectType
+    | keyof typeof Polarity
+    | keyof typeof ProgramError
+    | keyof typeof ProgramRequest
+    | keyof typeof ProgramState
+    | keyof typeof PropertyIdentifier
+    | keyof typeof ProtocolLevel
+    | keyof typeof Relationship
+    | keyof typeof Reliability
+    | keyof typeof RestartReason
+    | keyof typeof SecurityLevel
+    | keyof typeof SecurityPolicy
+    | keyof typeof Segmentation
+    | keyof typeof ShedState
+    | keyof typeof SilencedState
+    | keyof typeof TimerState
+    | keyof typeof TimerTransition
+    | keyof typeof VTClass
+    | keyof typeof WriteStatus
+    | keyof typeof DaysOfWeek
+    | keyof typeof EventTransitionBits
+    | keyof typeof LimitEnable
+    | keyof typeof LogStatus
+    | keyof typeof ObjectTypesSupported
+    | keyof typeof ResultFlags
+    | keyof typeof ServicesSupported
+    | keyof typeof StatusFlags
+    | keyof typeof ApplicationTag
+    | keyof typeof BvlcResultFormat
+    | keyof typeof BvlcResultPurpose
+    | keyof typeof CharacterStringEncoding
+    | keyof typeof CovType
+    | keyof typeof EnableDisable
+    | keyof typeof MaxApduLengthAccepted
+    | keyof typeof MaxSegmentsAccepted
+    | keyof typeof NetworkLayerMessageType
+    | keyof typeof NpduControlBit
+    | keyof typeof NpduControlPriority
+    | keyof typeof PduConReqBit
+    | keyof typeof PduSegAckBit
+    | keyof typeof PduType
+    | keyof typeof PropertyStates
+    | keyof typeof ReadRangeType
+    | keyof typeof ReinitializedState
+    | keyof typeof TimeStamp;
