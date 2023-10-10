@@ -9,7 +9,7 @@
 
 import process from "process";
 import { enums } from "..";
-import { AnyEnum } from "./enum";
+import { AnyEnum, PropertyIdentifier } from "./enum";
 import { BACValue, BacnetObjectIdentity, Sender } from "./types";
 
 // Map the Property types to their enums/bitstrings
@@ -244,7 +244,6 @@ function getAllPropertiesManually(
   });
 }
 
-
 function readBit(buffer, i, bit) {
   return (buffer[i] >> bit) % 2;
 }
@@ -263,7 +262,6 @@ function setBit(buffer, i, bit, value) {
     buffer[i] |= 1 << bit;
   }
 }
-
 
 function handleBitString(buffer: Buffer, bitsUsed: number, usedEnum: AnyEnum) {
   const res: number[] = [];
@@ -287,10 +285,9 @@ function handleBitString(buffer: Buffer, bitsUsed: number, usedEnum: AnyEnum) {
  */
 export function parseValue(
   address: Sender | Sender["address"],
-  objId: BacnetObjectIdentity,
-  parentType: enums.ObjectType,
+  parentType: BacnetObjectIdentity["type"] | enums.ObjectType,
   value: BACValue["value"][number],
-  supportsMultiple: boolean,
+  supportsMultiple: boolean = false,
   callback: (value: BACValue["value"][number]["value"] | null) => void
 ) {
   let resValue: BACValue["value"][number]["value"] | null = null;
@@ -391,6 +388,7 @@ export function parseValue(
           const requestArray = [
             {
               objectId: value.value,
+              // meaning read all properties
               properties: [{ id: 8 }],
             },
           ];

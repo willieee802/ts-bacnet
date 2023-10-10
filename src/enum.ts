@@ -33,15 +33,24 @@ const trace = Debugger("bacnet=enum=trace");
 
 
 
-function invertEnum(
-  enumToInvert: Record<string, number> | AnyEnum
-): Record<number, string> {
-  const invertedEnum: Record<number, string> = {};
-  Object.keys(enumToInvert).forEach((key) => {
-    invertedEnum[enumToInvert[key]] = key;
-  });
-  return invertedEnum;
+// function invertEnum(
+//   enumToInvert: AnyEnum
+// ): Record<number, string> {
+//   const invertedEnum: Record<number, string> = {};
+//   Object.keys(enumToInvert).forEach((key) => {
+//     invertedEnum[enumToInvert[key]] = key;
+//   });
+//   return invertedEnum;
+// }
+
+function invertEnum(enumToInvert: AnyEnum) {
+  return Object.keys(enumToInvert).reduce((acc, key) => {
+    const val = enumToInvert[key];
+    acc[val] = key;
+    return acc;
+  }, {} as Record<number, string>);
 }
+  
 
 export function getEnumName(
   group: AnyEnum,
@@ -56,7 +65,7 @@ export function getEnumName(
         '"'
     );
   }
-  let foundEntry: string | null;
+  let foundEntry: AnyEnum;
   try {
     const invertedGroup = invertEnum(group);
     foundEntry = invertedGroup[value];
