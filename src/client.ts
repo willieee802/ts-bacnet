@@ -83,8 +83,10 @@ const confirmedServiceMap = {
   [beC.CONFIRMED_PRIVATE_TRANSFER]: "privateTransfer",
 };
 
+//TODO is this correct?
 const errorReasonEnums = {
   BacnetAbort: baEnum.RejectReason,
+  another: baEnum.AbortReason,
 };
 
 type reasonClass = "BacnetAbort";
@@ -117,8 +119,15 @@ export function bacnetErrorToString(err: Error | BACError) {
   if (!errorReasonEnums[reasonClass]) return;
 
   const reasonString = errorReasonEnums[reasonClass][reason];
+  const alternativeReasonString = errorReasonEnums["another"][reason];
 
-  return reasonClass + ": " + reasonString;
+  return (
+    reasonClass +
+    ": " +
+    reasonString +
+    "or alternatively it could be " +
+    alternativeReasonString
+  );
 }
 
 /**

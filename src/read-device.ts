@@ -284,6 +284,7 @@ function handleBitString(buffer: Buffer, bitsUsed: number, usedEnum: AnyEnum) {
  */
 export function parseValue(
   address: Sender | Sender["address"],
+  objId: PropertyIdentifier,
   parentType: BacnetObjectIdentity["type"] | enums.ObjectType,
   value: BACValue["value"][number],
   supportsMultiple: boolean = false,
