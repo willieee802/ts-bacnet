@@ -139,7 +139,7 @@ export function bacnetErrorToString(err: Error | BACError) {
  * @param {string=} [options.broadcastAddress=255.255.255.255] - The address used for broadcast messages.
  * @param {number=} [options.apduTimeout=3000] - The timeout in milliseconds until a transaction should be interpreted as error.
  * @example
- * const bacnet = require('node-bacnet');
+ * const bacnet = require('ts-bacnet');
  *
  * const client = new bacnet({
  *   port: 47809,                          // Use BAC1 as communication port
@@ -782,7 +782,7 @@ export default class Client extends EventEmitter {
    * @event bacnet.error
    * @param {error} err - The error object thrown by the underlying transport layer.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.on('error', (err) => {
@@ -803,7 +803,7 @@ export default class Client extends EventEmitter {
    * @param {number=} options.highLimit - Maximal device instance number to search for.
    * @fires bacnet.iAm
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.whoIs();
@@ -873,7 +873,7 @@ export default class Client extends EventEmitter {
    * @param {string} receiver - IP address of the target device.
    * @param {date} dateTime - The date and time to set on the target device.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.timeSync('192.168.1.43', new Date());
@@ -898,7 +898,7 @@ export default class Client extends EventEmitter {
    * @param {string} receiver - IP address of the target device.
    * @param {date} dateTime - The date and time to set on the target device.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.timeSyncUTC('192.168.1.43', new Date());
@@ -932,7 +932,7 @@ export default class Client extends EventEmitter {
    * @param {number=} options.arrayIndex - The array index of the property to be read.
    * @param {function} next - The callback containing an error, in case of a failure and value object in case of success.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.readProperty('192.168.1.43', {type: 8, instance: 44301}, 28, (err, value) => {
@@ -1042,7 +1042,7 @@ export default class Client extends EventEmitter {
    * @param {number=} options.priority - The priority of the value to be written.
    * @param {function} next - The callback containing an error, in case of a failure and value object in case of success.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.writeProperty('192.168.1.43', {type: 8, instance: 44301}, 28, [
@@ -1130,7 +1130,7 @@ export default class Client extends EventEmitter {
    * @param {number=} options.invokeId - The invoke ID of the confirmed service telegram.
    * @param {function} next - The callback containing an error, in case of a failure and value object in case of success.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * const requestArray = [
@@ -1230,7 +1230,7 @@ export default class Client extends EventEmitter {
    * @param {number=} options.invokeId - The invoke ID of the confirmed service telegram.
    * @param {function} next - The callback containing an error, in case of a failure and value object in case of success.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * const values = [
@@ -1311,7 +1311,7 @@ export default class Client extends EventEmitter {
    * @param {number=} options.invokeId - The invoke ID of the confirmed service telegram.
    * @param {function} next - The callback containing an error, in case of a failure and value object in case of success.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * const settings = {deviceId: 123}; // our BACnet device
@@ -1408,7 +1408,7 @@ export default class Client extends EventEmitter {
    * @param {string=} options.password - The optional password used to set the network communication state.
    * @param {function} next - The callback containing an error, in case of a failure and value object in case of success.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.deviceCommunicationControl('192.168.1.43', 0, bacnet.enum.EnableDisable.DISABLE, (err) => {
@@ -1473,7 +1473,7 @@ export default class Client extends EventEmitter {
    * @param {string=} options.password - The optional password used to restart the device.
    * @param {function} next - The callback containing an error, in case of a failure and value object in case of success.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.reinitializeDevice('192.168.1.43', bacnet.enum.ReinitializedState.COLDSTART, (err, value) => {
@@ -1848,7 +1848,7 @@ export default class Client extends EventEmitter {
    * @param {object} values.value.value - The actual updated value.
    * @param {number} values.priority - The priority of the updated property.
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.unconfirmedCOVNotification(
@@ -2678,7 +2678,7 @@ export default class Client extends EventEmitter {
    * Unloads the current bacnet instance and closes the underlying UDP socket.
    * @function bacnet.close
    * @example
-   * const bacnet = require('node-bacnet');
+   * const bacnet = require('ts-bacnet');
    * const client = new bacnet();
    *
    * client.close();

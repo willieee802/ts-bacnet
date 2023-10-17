@@ -1,25 +1,25 @@
-# node-bacnet (typescript edition)
+# ts-bacnet (typescript edition)
 
-[![node-bacnetLogo64](images/bacnet-icon-quad64.png)](https://www.npmjs.com/package/@verticgreens/bacnet)
+[![ts-bacnetLogo64](images/bacnet-icon-quad64.png)](https://www.npmjs.com/package/ts-bacnet)
 
-The BACnet® protocol library written in pure JavaScript.
+The BACnet® protocol library written in pure Javascript/Typescript.
 
 BACnet® is a protocol to interact with building automation devices defined by ASHRAE.
 
 ## Usage
 
-Add node-bacnet to your project by using:
+Add ts-bacnet to your project by using:
 
 ``` sh
-npm install --save @verticgreens/bacnet
+npm install --save ts-bacnet
 ```
 
-The API documentation is available under **[GitHub Page of Docs](https://biancoroyal.github.io/bacnet/)**.
+The API documentation is available under **[GitHub Page of Docs](https://verticgreens.github.io/bacnet/)**.
 
 ### Features
 
 The BACnet® standard defines a wide variety of services as part of the
-specification. While node-bacnet tries to be as complete as possible,
+specification. While ts-bacnet tries to be as complete as possible,
 following services are already supported at this point in time:
 
 | Service                        | Execute                                                                                | Handle                                                                        |

@@ -1,3 +1,10 @@
+## <major>0.3.0
+* added typescript support
+* made read device helper function embedded into the lib
+* better documentation of types
+* misc changes
+
+
 ## <small>0.2.4 (2020-06-02)</small>
 
 * chore: changelog ([fb4618a](https://github.com/BiancoRoyal/node-bacstack/commit/fb4618a))

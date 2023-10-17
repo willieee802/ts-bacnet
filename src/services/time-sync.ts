@@ -6,7 +6,7 @@
  * @param {date} dateTime - The time to be synchronized to.
  *
  * @example
- * const bacnet = require('node-bacnet');
+ * const bacnet = require('ts-bacnet');
  * const client = new bacnet();
  *
  * client.on('timeSync', (msg) => {

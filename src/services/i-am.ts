@@ -9,7 +9,7 @@
  * @param {number} vendorId - The BACNET vendor-id of the detected device.
  *
  * @example
- * const bacnet = require('node-bacnet');
+ * const bacnet = require('ts-bacnet');
  * const client = new bacnet();
  *
  * client.on('iAm', (msg) => {

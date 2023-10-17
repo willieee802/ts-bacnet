@@ -1,6 +1,6 @@
 {
-  "name": "@verticgreens/bacnet",
-  "version": "0.2.26",
+  "name": "ts-bacnet",
+  "version": "0.3.0",
   "description": "The BACnet protocol library written in pure JavaScript.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VerticGreens/node-bacnet.git"
+    "url": "git+https://github.com/VerticGreens/ts-bacnet.git"
   },
   "keywords": [
     "bacnet",
@@ -55,9 +55,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/VerticGreens/node-bacnet/issues"
+    "url": "https://github.com/VerticGreens/bacnet/issues"
   },
-  "homepage": "https://github.com/VerticGreens/node-bacnet",
+  "homepage": "https://github.com/VerticGreens/bacnet",
   "dependencies": {
     "csv-parse": "^5.5.0",
     "debug": "^4.1.1",

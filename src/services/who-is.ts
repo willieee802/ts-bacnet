@@ -7,7 +7,7 @@
  * @param {number=} highLimit - The highest BACnet ID being queried.
  *
  * @example
- * const bacnet = require('node-bacnet');
+ * const bacnet = require('ts-bacnet');
  * const client = new bacnet();
  *
  * client.on('whoIs', (msg) => {
