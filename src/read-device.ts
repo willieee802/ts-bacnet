@@ -11,6 +11,8 @@ import process from "process";
 import { enums } from "..";
 import { AnyEnum, PropertyIdentifier } from "./enum";
 import { BACValue, BacnetObjectIdentity, Sender } from "./types";
+import { getEngineeringUnitHumanReadable } from "./EngineeringUnitHumanReadable";
+import { BacnetError } from "./client";
 
 // Map the Property types to their enums/bitstrings
 const PropertyIdentifierToEnumMap = {};
@@ -291,6 +293,7 @@ export function parseValue(
   callback: (value: BACValue["value"][number]["value"] | null) => void
 ) {
   let resValue: BACValue["value"][number]["value"] | null = null;
+  let error: BacnetError | null = null;
   if (
     value &&
     value.type &&
@@ -414,13 +417,14 @@ export function parseValue(
         break;
       case enums.ApplicationTag.ERROR:
         // lookup error class and code
-        resValue = {
+        error = {
           errorClass: enums.getEnumName(
             enums.ErrorClass,
             value.value.errorClass
           ),
           errorCode: enums.getEnumName(enums.ErrorCode, value.value.errorCode),
         };
+        resValue = null;
         break;
       case enums.ApplicationTag.OBJECT_PROPERTY_REFERENCE:
       case enums.ApplicationTag.DEVICE_OBJECT_PROPERTY_REFERENCE:
@@ -446,6 +450,36 @@ export function parseValue(
         );
         resValue = value;
     }
+  }
+
+  // format unit to human readable string
+  if (objId === enums.PropertyIdentifier.UNITS) {
+    const unit =
+      typeof resValue === "string"
+        ? resValue
+        : resValue && enums.getEnumName(enums.EngineeringUnits, resValue);
+    const formattedName = unit && getEngineeringUnitHumanReadable(unit);
+    if (formattedName) {
+      resValue = formattedName;
+    }
+  }
+
+  if (objId === Bacnet.enum.PropertyIdentifier.UNITS) {
+    const unit =
+      typeof resValue === "string"
+        ? resValue
+        : resValue &&
+          Bacnet.enum.getEnumName(Bacnet.enum.EngineeringUnits, resValue);
+
+    const formattedName = unit && getEngineeringUnitHumanReadable(unit);
+
+    if (formattedName) {
+      resValue = formattedName;
+    }
+  }
+
+  if (resValue === null || resValue === undefined) {
+    resValue = " ";
   }
 
   setImmediate(() => callback(resValue));
