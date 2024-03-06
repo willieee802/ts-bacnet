@@ -1,9 +1,9 @@
 {
   "name": "@willieee802/ts-bacnet",
-  "version": "0.3.1",
+  "version": "0.3.4",
   "description": "TS",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "changelog": "conventional-changelog -p conventail -i CHANGELOG.md -s -r 0",
     "lint": "jshint lib/ test/ index.js && eslint lib/** test/** examples/** index.js",
@@ -24,7 +24,7 @@
     "compose:build": "docker-compose build",
     "compose:up": "docker-compose up --abort-on-container-exit --exit-code-from bacnet-client",
     "docker": "npm run compose:build && npm run compose:up",
-    "prepublishOnly": "npm run coverage && npm run docs && npm run build",
+    "prepublishOnly": "npm run build",
     "build": "tsc",
     "publishToNPM": "npm publish --access public"
   },
